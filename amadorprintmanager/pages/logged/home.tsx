@@ -23,7 +23,7 @@ export default function Home() {
         </div>
         <div className="flex flex-col justify-normal min-h-screen bg-purple-950">
             <div className ="bg-purple-600 w-11/12 h-auto rounded-3xl p-3 m-5 mt-20 min-h-52">
-            <div className ="flex bg-purple-950 w-full items-center rounded-3xl h-10 p-5">
+            <div className ="flex bg-purple-950 w-full items-center justify-between rounded-3xl h-10 p-5">
                 <text className="p-5">
                 File Name
                 </text>
@@ -33,10 +33,17 @@ export default function Home() {
                 <text className="p-5">
                 Print Time
                 </text>
+                <text className="pr-96">
+                Image Preview
+                </text>
+                <a href="/logged/submitjob">
+                <button className="bg-red-500 rounded-xl px-5">
+                     Request something to be printed
+                </button>   
+                </a>
             </div >
             <div className="flex flex-col items-center justify-center h-auto min-h-96 max-h-screen text-center">
                 <p>Welcome to the Amador Print Manager <br /> You dont have  anything requested yet</p>
-                <a href="/logged/submitjob">Request something to be printed</a>
             </div>
             </div>
         </div>
