@@ -7,7 +7,7 @@ export default function Register() {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
 
-  const handleSubmit = (any:e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
 
     // Validate passwords
