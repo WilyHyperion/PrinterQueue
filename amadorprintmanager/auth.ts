@@ -17,21 +17,32 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
         console.log(credentials, "credentials")
         const user = await getLoggedUser(credentials.email as String, credentials.password as String)
         if (!user.error) {
-          console.log("user", user)
-            user.id = user._id
+            user.id = user._id.toString()
+            console.log("user", user)
             return user
         } else {
             return null
         }
        } catch (error) {
         console.log("error", error)
-       } 
+       }
     },
-    
   })],
   pages: {
     signIn: "/login",
     signOut: "/logout",
     
   },
+  callbacks: {
+    async jwt({ token, user }) {
+        if (user) {
+            token.id = user.id
+        }
+        return token
+    },
+    session({ session, token }) {
+      session.user.id = token.id as string
+      return session
+    },
+  }
 })

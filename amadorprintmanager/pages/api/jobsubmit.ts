@@ -2,6 +2,8 @@
 import { auth } from "@/auth";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { Formidable } from "formidable";
+import { Job } from "@/lib/types";
+const fs = require('fs')
 export const config = {
     api: {
       bodyParser: false,
@@ -10,7 +12,7 @@ export const config = {
   import db from "@/lib/db";
  const mongodb =  require("mongodb");
  const bucket = new mongodb.GridFSBucket(db, {
-    "bucketName": "jobfiles"
+    "bucketName": "JobFiles"
  });
 export default async function handler(
   req: NextApiRequest,
@@ -24,17 +26,31 @@ export default async function handler(
         return
     }
     const form = new Formidable();
-     form.parse(req, (err: any, fields: any, files: any) => {
-        console.log("fields", fields);
-        console.log("files", files);
-        let name = fields.name;
-        if(!session?.user){
+     form.parse(req, async (err: any, fields: any, files) => {
+        let name = fields.name[0];
+        if(!session?.user || !files){
             return
         }
         let userid = session.user.id;
-        console.log("userid", userid);
-        console.log("name", name);
-        console.log("file", files.file[0]);
+        let object = await db.collection("Jobs").insertOne({
+          userId: userid,
+          status: "submited",
+          name: name,
+          date: new Date(),
+        } as Job)
+        let id = object.insertedId;
+        if(!(files.file) ||! (files.file[0])){
+
+          return {
+            error: "No file attached"
+          }
+        }
+        console.log(files.file[0])
+        const readableStream = fs.createReadStream(files.file[0].filepath);
+        console.log(id)
+        console.log(object)
+        readableStream.pipe(bucket.openUploadStream(id, {
+        }))
     });
     res.status(200).json({ success: true });
 }

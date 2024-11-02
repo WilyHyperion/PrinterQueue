@@ -2,12 +2,21 @@
 import db from './db'
 
 const bcrypt = require('bcryptjs');
-    export async function addUser (email: String, password:String) {
+    export async function addUser (email: String, password:String, studentID: number) {
+        //TODO Validate info
+        let user = await db.collection("users").findOne({$or : [{email: email}, {studentID: studentID}]})
+        if(user){
+            console.log(user)
+            return {
+                error: user.email === email ? "Email already in use." : "Student ID already in use"
+            }
+        }
        const salt = await bcrypt.genSalt(10)
        const hashedPassword = await bcrypt.hash(password, salt)
        await db.collection("users").insertOne({
            email: email,
            password: hashedPassword,
+            studentID: studentID
        })
 
 
