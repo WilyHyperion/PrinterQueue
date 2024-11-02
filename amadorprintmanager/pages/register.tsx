@@ -7,9 +7,8 @@ export default function Register() {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: any) => {
     e.preventDefault();
-
     // Validate passwords
     if (password !== confirmPassword) {
       setError('Passwords do not match');
@@ -19,10 +18,25 @@ export default function Register() {
     setError('');
 
     const formData = {
-      email,
-      studentId,
-      password,
+      email: email,
+      studentID: studentId,
+      password: password,
     };
+    fetch('/api/register', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(formData),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.error) {
+          setError(data.error);
+        } else {
+          window.location.href = '/logged/home';
+        }
+      });
 
   };
 
@@ -64,11 +78,12 @@ export default function Register() {
           <label htmlFor="credentials-StudentID" className="block mb-2 text-yellow-400">
             Student ID
             <input
-              type="number" 
+              type="number"
               name="studentid"
               placeholder="Student ID"
               className="text-black w-full px-4 py-2 mt-1 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400"
               required
+              onChange={(e) => setStudentId(e.target.value)}
             />
           </label>
 
@@ -98,7 +113,7 @@ export default function Register() {
             />
           </label>
 
-          {error && <p className="text-red-500 mb-4">{error}</p>}
+          {error && <p className="text-[#7c1d1d] mb-4 font-bold">{error}</p>}
 
           <input
             type="submit"
