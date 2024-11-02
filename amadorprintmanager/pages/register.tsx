@@ -7,7 +7,7 @@ export default function Register() {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (any:e) => {
     e.preventDefault();
 
     // Validate passwords
@@ -30,17 +30,17 @@ export default function Register() {
     <>
       <div className="flex flex-col items-center justify-center min-h-screen bg-purple-950">
         <img
-          src="./backgroundGear.svg"
-          height={800}
-          width={800}
-          className="absolute top-0 left-0 w-auto h-1/1 transform -translate-x-1/2 -translate-y-1/2"
-        />
-        <img
-          src="./backgroundGear.svg"
-          height={800}
-          width={800}
-          className="absolute top-0 right-0 w-auto transform -translate-y-1/2 translate-x-1/2"
-        />
+            src = './backgroundGear.svg'
+            height={800}
+            width={800}
+            className= "absolute top-0 left-0 w-auto h-full object-contain transform -translate-y-1/2 -translate-x-1/2 max-w-md md:max-w-2xl lg:max-w-xl"
+          />
+          <img
+            src = './backgroundGear.svg'
+            height={800}
+            width={800}
+            className= "absolute top-0 right-0 w-auto h-full object-contain transform -translate-y-1/2 translate-x-1/2 max-w-md md:max-w-2xl lg:max-w-xl"
+          />
 
         <form
           onSubmit={handleSubmit}

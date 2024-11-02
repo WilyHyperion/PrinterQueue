@@ -25,13 +25,13 @@ export default function SignIn() {
             src = './backgroundGear.svg'
             height={800}
             width={800}
-            className= "absolute top-0 left-0 w-auto h-1/1 transform -translate-x-1/2 -translate-y-1/2"
+            className= "absolute top-0 left-0 w-auto h-full object-contain transform -translate-y-1/2 -translate-x-1/2 max-w-md md:max-w-2xl lg:max-w-xl"
           />
           <img
             src = './backgroundGear.svg'
             height={800}
             width={800}
-            className= "absolute top-0 right-0 w-auto transform -translate-y-1/2 translate-x-1/2"
+            className= "absolute top-0 right-0 w-auto h-full object-contain transform -translate-y-1/2 translate-x-1/2 max-w-md md:max-w-2xl lg:max-w-xl"
           />
           <form 
                 action={credentialsAction} 
