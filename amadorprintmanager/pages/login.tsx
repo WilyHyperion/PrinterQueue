@@ -1,11 +1,23 @@
 "use client";
-import { signIn } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
+import { useEffect } from "react";
 
 export default function SignIn() {
-  const credentialsAction = (formData: FormData) => {
-    signIn("credentials", formData as any);
+  const credentialsAction = async  (formData: FormData) => {
+    console.log("formData", formData);
+    const formDataObj: { [key: string]: string } = {};
+    formData.forEach((value, key) => {
+      formDataObj[key] = value.toString();
+    });
+    let p = await signIn("credentials", formDataObj);
+    console.log("p", p);
   };
-
+  const { data: session } = useSession()
+  useEffect(() => {
+    if (session) {
+      window.location.href = "/logged/home";
+    }
+  }, [session]);
   return (
     <>
       <form action={credentialsAction}>
@@ -19,9 +31,14 @@ export default function SignIn() {
         </label>
         <input type="submit" value="Sign In" />
       </form>
-      <button onClick = {() => {
-        signIn("google")
-      }}> Google Sign In</button>
+      <button
+        onClick={() => {
+          signIn("google");
+        }}
+      >
+        Google Sign In
+      </button>
+      <a href="/register">Register</a>
     </>
   );
 }

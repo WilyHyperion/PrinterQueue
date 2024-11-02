@@ -5,10 +5,11 @@ const bcrypt = require('bcryptjs');
     export async function addUser (email: String, password:String) {
        const salt = await bcrypt.genSalt(10)
        const hashedPassword = await bcrypt.hash(password, salt)
-       await db.email("users").insertOne({
+       await db.collection("users").insertOne({
            email: email,
            password: hashedPassword,
        })
+
 
    }
    export async  function getLoggedUser (email: String, password:String)  {

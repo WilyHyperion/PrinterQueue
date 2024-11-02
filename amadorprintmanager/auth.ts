@@ -13,13 +13,25 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
         password: {  label: "Password", type: "password" },
     },
     async authorize(credentials, request) {
-        console.log(credentials + "credsran")
+       try {
+        console.log(credentials, "credentials")
         const user = await getLoggedUser(credentials.email as String, credentials.password as String)
         if (!user.error) {
+          console.log("user", user)
+            user.id = user._id
             return user
         } else {
             return null
         }
+       } catch (error) {
+        console.log("error", error)
+       } 
     },
+    
   })],
+  pages: {
+    signIn: "/login",
+    signOut: "/logout",
+    
+  },
 })
