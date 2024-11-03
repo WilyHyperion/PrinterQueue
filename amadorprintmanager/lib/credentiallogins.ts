@@ -14,9 +14,10 @@ const bcrypt = require('bcryptjs');
        const salt = await bcrypt.genSalt(10)
        const hashedPassword = await bcrypt.hash(password, salt)
        await db.collection("users").insertOne({
-           email: email,
-           password: hashedPassword,
-            studentID: studentID
+        email: email,
+        password: hashedPassword,
+        studentID: studentID,
+        role: "student"
        })
 
 

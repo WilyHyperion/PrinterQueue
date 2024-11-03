@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import { STLLoader } from 'three/examples/jsm/loaders/STLLoader.js';
 import * as THREE from 'three';
 import STLRender from '@/components/stlRender';
+import calculateMetrics from '@/lib/calculateCost';
 
 export default function STLModelUploader() {
   const [file, setFile] = useState(null );
@@ -16,78 +17,13 @@ export default function STLModelUploader() {
     const selectedFile = event.target.files[0];
     if (selectedFile && selectedFile.name.endsWith('.stl')) {
       setFile(selectedFile);
-      calculateMetrics(selectedFile);
+      calculateMetrics(selectedFile, setLoading, infillDensity, setPrintTime, setCost, setError);
       setError(''); // Clear previous error
     } else {
       setError('Please upload a valid STL file.');
     }
   };
-  const calculateMetrics = (file: Blob) => {
-    setLoading(true);
-    const reader = new FileReader();
-    reader.onload = (event) => {
-      if(!event.target) return;
-      const contents = event.target.result;
-      const loader = new STLLoader();
-
-      try {
-        const geometry = loader.parse(contents || '');
-
-        // Calculate volume
-        const volume = calculateVolume(geometry);
-
-        // Parameters for calculations
-        const printSpeed = 25000; // mm/hour
-        const materialCostPerCc = 0.000025; // Cost per cubic centimeter
-
-        // Calculate volume used based on infill density
-        const effectiveVolume = volume * (infillDensity / 100);
-
-        // Calculate print time and cost
-        const printTimeHours = effectiveVolume / printSpeed;
-        const costAmount = effectiveVolume * materialCostPerCc;
-
-        setPrintTime(printTimeHours.toFixed(2));
-        setCost(costAmount.toFixed(2));
-      } catch (err) {
-        setError('Failed to parse the STL file. Please ensure it is a valid file.');
-      } finally {
-        setLoading(false);
-      }
-    };
-    reader.readAsArrayBuffer(file);
-  };
-
-  const calculateVolume = (geometry: THREE.BufferGeometry<THREE.NormalBufferAttributes>) => {
-    let volume = 0;
-    const faces = geometry.attributes.position.count;
-
-    for (let i = 0; i < faces; i += 3) {
-      const a = new THREE.Vector3(
-        geometry.attributes.position.getX(i),
-        geometry.attributes.position.getY(i),
-        geometry.attributes.position.getZ(i)
-      );
-
-      const b = new THREE.Vector3(
-        geometry.attributes.position.getX(i + 1),
-        geometry.attributes.position.getY(i + 1),
-        geometry.attributes.position.getZ(i + 1)
-      );
-
-      const c = new THREE.Vector3(
-        geometry.attributes.position.getX(i + 2),
-        geometry.attributes.position.getY(i + 2),
-        geometry.attributes.position.getZ(i + 2)
-      );
-
-      volume += (1 / 6) * Math.abs(a.dot(b.cross(c)));
-    }
-
-    return Math.abs(volume);
-  };
-
- 
+  
 
   return (
     <div className="flex items-center justify-center bg-gradient-to-r from-indigo-900 via-purple-800 to-purple-900 w-screen min-h-screen">

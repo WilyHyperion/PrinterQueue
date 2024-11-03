@@ -1,5 +1,5 @@
 import StlFromID from "@/components/stlFromID"
-import { Job } from "@/lib/types"
+import { Job } from "@/types/types"
 import { use, useEffect, useState } from "react"
 
 

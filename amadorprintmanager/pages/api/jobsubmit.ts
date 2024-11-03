@@ -1,8 +1,8 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import { auth } from "@/auth";
 import type { NextApiRequest, NextApiResponse } from "next";
-import { Formidable } from "formidable";
-import { Job } from "@/lib/types";
+import formidable, { Formidable } from "formidable";
+import { Job } from "@/types/types";
 
 const fs = require('fs')
 export const config = {
@@ -11,6 +11,7 @@ export const config = {
     },
   };
   import db, { bucket } from "@/lib/db";
+import calculateMetrics, { backendCalculateMetrics } from "@/lib/calculateCost";
 
 export default async function handler(
   req: NextApiRequest,
@@ -25,7 +26,27 @@ export default async function handler(
     }
     const form = new Formidable();
      form.parse(req, async (err: any, fields: any, files) => {
-        let name = fields.name[0];
+      if(!(files.file) ||! (files.file[0])){
+        console.log("No file attached")
+        return {
+          error: "No file attached"
+        }
+      }
+      let printtme= ''
+      let cost = ''
+      const setPrintTime = (time: string) => {
+        printtme = time 
+      }
+      const setCost = (costt: string) => {
+        cost = costt
+      }
+      const file = files.file[0] as formidable.File;
+      let filedata = fs.readFileSync(file.filepath);
+      //convert to arraybuffer
+      const arraybuffer = filedata.buffer.slice(filedata.byteOffset, filedata.byteOffset + filedata.byteLength);
+      await backendCalculateMetrics(arraybuffer, ()=> {}, fields.inFillPercentage[0], setPrintTime, setCost, ()=> {})
+      console.log(printtme, cost, "print time and cost")
+      let name = fields.name[0];
         if(!session?.user || !files){
             return
         }
@@ -39,18 +60,12 @@ export default async function handler(
           color: fields.color[0],
           printer: fields.printer[0],
           notes: fields.notes[0],
+          printTime: printtme,
+          cost: cost,
         } as Job)
         let id = object.insertedId;
-        if(!(files.file) ||! (files.file[0])){
-          console.log("No file attached")
-          return {
-            error: "No file attached"
-          }
-        }
-        console.log(files.file[0].newFilename)
         const readableStream = fs.createReadStream(files.file[0].filepath.toString());
-
          readableStream.pipe(bucket.openUploadStream(id + ".stl"))
     });
-    res.status(200).json({ success: true });
+    res.redirect("/dashboard")
 }

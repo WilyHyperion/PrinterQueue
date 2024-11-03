@@ -2,7 +2,7 @@
 
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from "next";
-import { Job } from "@/lib/types";
+import { Job } from "@/types/types";
 import { auth } from "@/auth";
 import db from "@/lib/db";
 import { ObjectId } from "mongodb";

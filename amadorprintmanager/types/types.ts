@@ -11,4 +11,13 @@ export interface Job {
     printer: string;
     notes: string;
     teacherNotes: string;
+    printTime: string;
+    cost: string;
+}
+export interface User {
+    email: string;
+    role: string;
+    studentID: number;
+    _id: string;
+    id: string;
 }

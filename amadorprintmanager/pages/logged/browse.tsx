@@ -1,6 +1,6 @@
-import { Job } from "@/lib/types";
+import { Job } from "@/types/types";
 import { useEffect, useState } from "react";
-
+import { useSession } from "next-auth/react"
 
 export default function BrowseJobs() {
     const [jobs, setJobs] = useState([] as Job[])

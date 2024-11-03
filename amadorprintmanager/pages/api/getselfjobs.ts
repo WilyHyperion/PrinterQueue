@@ -14,31 +14,19 @@ export  default async function handler(
 ) {
     let user = await auth(req, res)
     if(!user){
+        res.status(401).json({ error: "Not authorized" })
         return
     }
     if(!user?.user){
-        return
-    }
-    if(user.user.role !== "admin" && user.user.role !== "teacher"){
         res.status(401).json({ error: "Not authorized" })
         return
     }
     let jobs = db.collection("Jobs").find({
-
+        userId: user.user.id
     }, {
         sort: {
             date: -1
         }
     })
-    let jobsl = await jobs.toArray()
-    for(let job of  jobsl){
-        job.id = job._id
-        let id = new ObjectId(job.userId)
-        console.log( id)
-        let u = await db.collection("users").findOne({ _id: id })
-        job.user = u
-
-        console.log(u)
-    }
-    res.status(200).json(jobsl)
+    res.status(200).json(jobs)
 }
