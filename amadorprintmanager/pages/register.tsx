@@ -42,7 +42,7 @@ export default function Register() {
 
   return (
     <>
-      <div className="flex flex-col items-center justify-center min-h-screen bg-purple-950">
+      <div className="flex items-center justify-center bg-gradient-to-r from-indigo-900 via-purple-800 to-purple-900 w-screen h-screen">
         <img
             src = './backgroundGear.svg'
             height={800}
@@ -58,11 +58,11 @@ export default function Register() {
 
         <form
           onSubmit={handleSubmit}
-          className="bg-purple-600 p-6 rounded-lg shadow-lg w-full max-w-sm"
+          className="bg-white text-black p-6 rounded-lg shadow-lg w-full max-w-sm"
         >
-          <h2 className="text-2xl text-yellow-400 font-bold mb-6 text-center">Register</h2>
+          <h2 className="text-2xl  font-bold mb-6 text-center">Register</h2>
 
-          <label htmlFor="credentials-email" className="block mb-2 text-yellow-400">
+          <label htmlFor="credentials-email" className="block mb-2 ">
             School Email
             <input
               type="email"
@@ -75,7 +75,7 @@ export default function Register() {
             />
           </label>
 
-          <label htmlFor="credentials-StudentID" className="block mb-2 text-yellow-400">
+          <label htmlFor="credentials-StudentID" className="block mb-2 ">
             Student ID
             <input
               type="number"
@@ -87,7 +87,7 @@ export default function Register() {
             />
           </label>
 
-          <label htmlFor="credentials-password" className="block mb-4 text-yellow-400">
+          <label htmlFor="credentials-password" className="block mb-4 ">
             Password
             <input
               type="password"
@@ -100,7 +100,7 @@ export default function Register() {
             />
           </label>
 
-          <label htmlFor="credentials-confirm-password" className="block mb-4 text-yellow-400">
+          <label htmlFor="credentials-confirm-password" className="block mb-4 ">
             Confirm Password
             <input
               type="password"
@@ -118,7 +118,7 @@ export default function Register() {
           <input
             type="submit"
             value="Register"
-            className="w-full bg-yellow-400 text-black py-2 rounded-lg hover:bg-purple-200 transition-colors cursor-pointer mb-4"
+            className="w-full bg-purple-700 text-white py-2 rounded-lg hover:bg-purple-400 transition-colors cursor-pointer mb-4"
           />
         </form>
       </div>

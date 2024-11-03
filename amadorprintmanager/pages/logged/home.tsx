@@ -14,16 +14,16 @@ const orders = ({ fileName, status, printTime, }) => {
 export default function Home() {
     return (
         <div>
-        <div className = "absolute top-0 h-fit w-full bg-purple-300 flex justify-between items-center p-4">
+        <div className = "absolute top-0 h-fit w-full bg-gradient-to-r from-purple-300 via-white to-yellow-100 flex justify-between items-center p-4">
             <h1 className = "text-black text-xl px-2 flex items-center">Home</h1>
             <div className ="flex space-x-2">
                 <button className = "flex items-center y-2 px-4 py-.5 bg-purple-700 rounded-xl text-black">Account settings</button>
                 <button onClick={() => {signOut()}} className = "flex items-center y-2 px-6 py-.5 bg-yellow-400 rounded-xl text-black">Logout</button>
             </div>
         </div>
-        <div className="flex flex-col justify-normal min-h-screen bg-purple-950">
-            <div className ="bg-purple-600 w-11/12 h-auto rounded-3xl p-3 m-5 mt-20 min-h-52">
-            <div className ="flex bg-purple-950 w-full items-center justify-between rounded-3xl h-10 p-5">
+        <div className="flex justify-center bg-gradient-to-r from-indigo-900 via-purple-800 to-purple-900 w-screen h-screen">
+            <div className =" bg-white text-black w-11/12 h-auto rounded-3xl p-3 m-5 mt-20 min-h-52">
+            <div className ="flex bg-gray-400 w-full items-center justify-between rounded-3xl h-10 p-5">
                 <text className="p-5">
                 File Name
                 </text>
