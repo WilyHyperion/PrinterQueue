@@ -22,13 +22,17 @@ export default function JobView() {
             setJob(t)
         })
     }, [])
-    return <div>Job
-        {job ? <div>
-            <h1>{job.name}</h1>
+    return <div className="bg-gradient-to-r from-indigo-900 via-purple-800 to-purple-900 w-full h-screen">
+        {job ? <div className="flex justify-center items-center ">
+            <div>
+            <h1 className="bg-purple-400 text-3xl ">{job.name}</h1>
             <p>{}</p>
             <p>{job.status}</p>
             <p>{job.user.email}</p>
-            <StlFromID id={job.id} />
+            </div >
+            <div className="m-20 p-10 ">
+                <StlFromID id={job.id} />
+            </div>
         </div> : <div>Loading...</div>}
     </div>
 }
