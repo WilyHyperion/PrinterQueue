@@ -16,7 +16,7 @@ export default function BrowseJobs() {
         <div className="bg-white w-full h-15 text-black text-3xl p-3 flex justify-center items-center ">
             <text>Order Submissions</text>
         </div>
-        <div className ="w-full h-screen flex  flex-col justify-center bg-gradient-to-r  from-indigo-900 via-purple-800 to-purple-900 ">
+        <div className ="w-full h-full flex  flex-col justify-center bg-gradient-to-r  from-indigo-900 via-purple-800 to-purple-900 ">
         <div className="bg-purple-950 w-auto h-auto p-5 m-5 rounded-3xl flex flex-row">
             <text className="mx-5 ml-5">Hello</text>
             <text className="mx-5 ml-5">Hello</text>
