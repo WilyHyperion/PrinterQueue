@@ -9,4 +9,6 @@ export interface Job {
     inFillPercentage: number;
     color: string;
     printer: string;
+    notes: string;
+    teacherNotes: string;
 }

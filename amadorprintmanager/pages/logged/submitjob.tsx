@@ -4,14 +4,15 @@ import * as THREE from 'three';
 import STLRender from '@/components/stlRender';
 
 export default function STLModelUploader() {
-  const [file, setFile] = useState(null);
-  const [printTime, setPrintTime] = useState(null);
-  const [cost, setCost] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
+  const [file, setFile] = useState(null );
+  const [printTime, setPrintTime] = useState(null as String | null);
+  const [cost, setCost] = useState(null as String | null);
+  const [loading, setLoading] = useState(false );
+  const [error, setError] = useState('' );
   const [infillDensity, setInfillDensity] = useState(20); // Default to 20% infill
 
-  const handleFileChange = (event: { target: { files: any[]; }; }) => {
+  const handleFileChange = (event : any) => {
+    if (!event.target) return;
     const selectedFile = event.target.files[0];
     if (selectedFile && selectedFile.name.endsWith('.stl')) {
       setFile(selectedFile);
@@ -25,11 +26,12 @@ export default function STLModelUploader() {
     setLoading(true);
     const reader = new FileReader();
     reader.onload = (event) => {
+      if(!event.target) return;
       const contents = event.target.result;
       const loader = new STLLoader();
 
       try {
-        const geometry = loader.parse(contents);
+        const geometry = loader.parse(contents || '');
 
         // Calculate volume
         const volume = calculateVolume(geometry);
@@ -56,7 +58,7 @@ export default function STLModelUploader() {
     reader.readAsArrayBuffer(file);
   };
 
-  const calculateVolume = (geometry) => {
+  const calculateVolume = (geometry: THREE.BufferGeometry<THREE.NormalBufferAttributes>) => {
     let volume = 0;
     const faces = geometry.attributes.position.count;
 
@@ -88,9 +90,9 @@ export default function STLModelUploader() {
  
 
   return (
-    <div className="flex items-center justify-center bg-gradient-to-r from-indigo-900 via-purple-800 to-purple-900 w-screen h-screen">
-      <div className="grid grid-cols-2 gap-8 p-10 bg-white rounded-lg shadow-xl max-w-5xl">
-        <form className="flex flex-col space-y-6" action="/api/jobsubmit" method="post" encType="multipart/form-data">
+    <div className="flex items-center justify-center bg-gradient-to-r from-indigo-900 via-purple-800 to-purple-900 w-screen min-h-screen">
+      <div className="grid grid-cols-2 gap-8 p-10 bg-white rounded-lg shadow-xl">
+        <form className="flex flex-col space-y-6  " action="/api/jobsubmit" method="post" encType="multipart/form-data">
           <h2 className="text-3xl font-semibold text-gray-700">Upload STL Model</h2>
           <input
             name="file"
@@ -102,7 +104,7 @@ export default function STLModelUploader() {
           <input
             type="number"
             value={infillDensity}
-            onChange={(e) => setInfillDensity(e.target.value)}
+            onChange={(e) => setInfillDensity(e.target.value as unknown as number)}
             className="input input-bordered w-full mb-4 p-2 border-2 text-black border-gray-300 rounded-lg focus:outline-none focus:border-purple-500"
             min="0"
             max="100"
@@ -120,6 +122,7 @@ export default function STLModelUploader() {
           <input type="text" name="name" placeholder="Enter Model Name" className="input text-black input-bordered w-full mb-4 p-2 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-purple-500" required />
           <input type="text" name="color" placeholder="Color" className="input text-black input-bordered w-full mb-4 p-2 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-purple-500" required />
           <input type="text" name="printer" placeholder="Printer" className="input text-black input-bordered w-full mb-4 p-2 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-purple-500" required />
+          <textarea name="notes" placeholder="Notes" className="input text-black input-bordered w-full mb-4 p-2 border-2 min-h-[20vh] border-gray-300 rounded-lg focus:outline-none focus:border-purple-500" required />
           <button type="submit" className="btn btn-primary bg-purple-600 hover:bg-purple-700 text-white font-semibold rounded-lg px-4 py-2">Submit</button>
         </form>
        <STLRender stlFile = {file}  />

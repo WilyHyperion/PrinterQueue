@@ -37,7 +37,8 @@ export default async function handler(
           date: new Date(),
           inFillPercentage: fields.inFillPercentage[0],
           color: fields.color[0],
-          printer: fields.printer[0]
+          printer: fields.printer[0],
+          notes: fields.notes[0],
         } as Job)
         let id = object.insertedId;
         if(!(files.file) ||! (files.file[0])){
