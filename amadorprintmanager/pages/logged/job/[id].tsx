@@ -1,3 +1,4 @@
+import StlFromID from "@/components/stlFromID"
 import { Job } from "@/lib/types"
 import { use, useEffect, useState } from "react"
 
@@ -27,6 +28,7 @@ export default function JobView() {
             <p>{}</p>
             <p>{job.status}</p>
             <p>{job.user.email}</p>
+            <StlFromID id={job.id} />
         </div> : <div>Loading...</div>}
     </div>
 }

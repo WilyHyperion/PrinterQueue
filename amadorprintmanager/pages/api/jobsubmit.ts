@@ -3,17 +3,15 @@ import { auth } from "@/auth";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { Formidable } from "formidable";
 import { Job } from "@/lib/types";
+
 const fs = require('fs')
 export const config = {
     api: {
       bodyParser: false,
     },
   };
-  import db from "@/lib/db";
- const mongodb =  require("mongodb");
- const bucket = new mongodb.GridFSBucket(db, {
-    "bucketName": "JobFiles"
- });
+  import db, { bucket } from "@/lib/db";
+
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse,
@@ -37,20 +35,21 @@ export default async function handler(
           status: "submited",
           name: name,
           date: new Date(),
+          inFillPercentage: fields.inFillPercentage[0],
+          color: fields.color[0],
+          printer: fields.printer[0]
         } as Job)
         let id = object.insertedId;
         if(!(files.file) ||! (files.file[0])){
-
+          console.log("No file attached")
           return {
             error: "No file attached"
           }
         }
-        console.log(files.file[0])
-        const readableStream = fs.createReadStream(files.file[0].filepath);
-        console.log(id)
-        console.log(object)
-        readableStream.pipe(bucket.openUploadStream(id, {
-        }))
+        console.log(files.file[0].newFilename)
+        const readableStream = fs.createReadStream(files.file[0].filepath.toString());
+
+         readableStream.pipe(bucket.openUploadStream(id + ".stl"))
     });
     res.status(200).json({ success: true });
 }

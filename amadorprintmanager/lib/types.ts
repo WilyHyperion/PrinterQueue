@@ -6,4 +6,7 @@ export interface Job {
     id: string;
     date: Date;
     user: any;
+    inFillPercentage: number;
+    color: string;
+    printer: string;
 }

@@ -13,4 +13,9 @@ const client = new MongoClient(uri,  {
 })
 client.connect()
 let db = client.db("amadorprintmanager")
+const mongodb =  require("mongodb");
+const bucket = new mongodb.GridFSBucket(db, {
+   "bucketName": "JobFiles"
+});
 export  default db;
+export {client, bucket }
