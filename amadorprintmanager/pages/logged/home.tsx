@@ -1,17 +1,20 @@
+import { Job } from "@/types/types";
 import { signOut, useSession } from "next-auth/react"
+import { useEffect, useState } from "react";
 
-const orders = ({ fileName, status, printTime, }) => {
-    return (
-      <div className="p-4 bg-gray-100 rounded shadow">
-        <h2 className="text-xl font-bold">{fileName}</h2>
-        <p>{status}</p>
-      </div>
-    );
-  };
+
 
 
 
 export default function Home() {
+    const [jobs, setJobs] = useState([] as Job[])
+    useEffect(() => {
+        fetch("/api/getselfjobs").then(async (res) => {
+            let t = await res.json()
+            setJobs(t)
+            console.log(t)
+        })
+    }, [])
     const s  = useSession()
     return (
         <div>
@@ -44,8 +47,14 @@ export default function Home() {
                 </button>
                 </a>
             </div >
-            <div className="flex flex-col items-center justify-center h-auto min-h-96 max-h-screen text-center">
-                <p>Welcome to the Amador Print Manager <br /> You dont have  anything requested yet</p>
+            <div className="flex flex-col items-center justify-center h-auto min-h-96 max-h-screen text-center w-full">
+                {jobs.map((job) => {
+                    return <div className = "flex flex-row w-full">
+                        <div> {job.name}</div>
+                        <div> {job.status}</div>
+                        <div> {job.printTime}</div>
+                    </div>
+                                    })}
             </div>
             </div>
         </div>

@@ -21,12 +21,13 @@ export  default async function handler(
         res.status(401).json({ error: "Not authorized" })
         return
     }
-    let jobs = db.collection("Jobs").find({
+    let jobs = await db.collection("Jobs").find({
         userId: user.user.id
     }, {
         sort: {
             date: -1
         }
     })
+    jobs = await jobs.toArray()
     res.status(200).json(jobs)
 }
