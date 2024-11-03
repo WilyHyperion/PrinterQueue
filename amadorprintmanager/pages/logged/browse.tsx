@@ -14,7 +14,11 @@ export default function BrowseJobs() {
     return(<div className ="w-full min-h-screen flex items-center justify-center">
         <ol className="w-1/2">
             {jobs.map((job) => {
-                return <li key={job.id}>{job.name} by {job.user.email}  </li>
+                return <li onClick = {
+                    (e) => {
+                        window.location.href = `/logged/job/${job.id}`
+                    }
+                } key={job.id}>{job.name} by {job.user.email} | {job.status}  </li>
             })}
         </ol>
     </div>)
