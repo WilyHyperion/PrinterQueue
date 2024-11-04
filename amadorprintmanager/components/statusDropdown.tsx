@@ -11,7 +11,8 @@ const statusColors = {
 export default function StatusDropdown(props: {
   defaultValue: string,
   id: string,
-  changeStatus: (status: string) => void
+  changeStatus: (status: string) => void,
+  editable: boolean
 }) {
   const [status, setStatus] = useState(props.defaultValue)
   useEffect(() => {
@@ -19,7 +20,7 @@ export default function StatusDropdown(props: {
   }, [props.defaultValue])
   return (<div className={`flex flex-row items-center justify-evenly w-[15%] px-5 py-2 rounded-full h-[4vh]  ${statusColors[status] || "bg-gray-300"
     }`}>
-    <select
+    {props.editable ? <select
       value={status}
       onChange={(e) => {
         setStatus(e.target.value);
@@ -42,6 +43,7 @@ export default function StatusDropdown(props: {
       <option value="printing" className=" w-full bg-red ">Printing</option>
       <option value="complete" className=" w-full bg-red ">Complete</option>
       <option value="rejected" className=" w-full bg-red ">Rejected</option>
-    </select>
+    </select> : <div>{status}</div>
+      }
   </div>)
 }

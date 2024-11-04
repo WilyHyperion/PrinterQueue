@@ -4,6 +4,7 @@ import StatusDropdown from "./statusDropdown";
 interface JobChartProps {
   jobs: Job[];
   setJobs: any;
+  editable: boolean;
 }
 const literalToPrettyName = {
     "name": "Job Name",
@@ -17,7 +18,7 @@ const literalToPrettyName = {
 } as {
     [key: string]: string
 }
-export default function jobChart(props: JobChartProps) {
+export default function JobChart(props: JobChartProps) {
   const [sort, setSort] = useState("date");
   useEffect(() => {
     let nsort = sort
@@ -105,7 +106,7 @@ export default function jobChart(props: JobChartProps) {
                 <h2 className = "w-[10%]">{job.printer}</h2>
                 <h2 className = "w-[10%]">{job.color}</h2>
               </div>
-              <StatusDropdown defaultValue={job.status} id = {job.id} changeStatus = {
+              <StatusDropdown editable = {props.editable} defaultValue={job.status} id = {job.id} changeStatus = {
                     (status) => {
                         props.setJobs(props.jobs.map((j) => {
                             if(j.id === job.id){
