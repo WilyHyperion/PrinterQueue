@@ -7,7 +7,8 @@ import { useEffect, useState } from "react";
 
 
 export default function Home() {
-    const [jobs, setJobs] = useState([] as Job[])
+    const [jobs, setJobs] = useState([
+    ] as Job[])
     useEffect(() => {
         fetch("/api/getselfjobs").then(async (res) => {
             let t = await res.json()
