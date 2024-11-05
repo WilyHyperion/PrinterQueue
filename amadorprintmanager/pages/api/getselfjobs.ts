@@ -29,6 +29,10 @@ export  default async function handler(
         }
     })
     jobs = await jobs.toArray()
+    if(jobs.length == 0){
+        res.status(200).json([])
+        return
+    }
     let jobuser = await db.collection("users").findOne({  
             _id: new ObjectId(jobs[0].userId)
     })

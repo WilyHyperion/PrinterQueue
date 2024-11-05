@@ -1,6 +1,7 @@
 import { Job } from "@/types/types";
 import { useEffect, useState } from "react";
 import StatusDropdown from "./statusDropdown";
+import Image from "next/image";
 interface JobChartProps {
   jobs: Job[];
   setJobs: any;
@@ -98,9 +99,9 @@ export default function JobChart(props: JobChartProps) {
           return (
             <div className="w-full h-[10%] p-5  text-black flex justify-between px-5 border-b-indigo-900 border-b-2" >
               <div className="flex flex-row items-center justify-evenly w-[80%]">
-                <div onClick={ () => {
+                <Image width={20} height={20} alt = "View" src = "/export.svg" onClick={ () => {
               window.location.href = "/logged/job/" + job.id
-            }} className="underline">View</div>
+            }} className="underline absolute left-5"></Image>
                 <h2 className = "w-[10%]">{job.name}</h2>
                 <h2 className = "w-[10%]">{new Date(job.date).toLocaleDateString()}</h2>
                 <h2 className = "w-[10%]">{job.user.studentID}</h2>

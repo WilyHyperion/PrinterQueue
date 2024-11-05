@@ -18,7 +18,7 @@ export default function StatusDropdown(props: {
   useEffect(() => {
     setStatus(props.defaultValue)
   }, [props.defaultValue])
-  return (<div className={`flex flex-row items-center justify-evenly w-[15%] px-5 py-2 rounded-full h-[4vh]  ${statusColors[status] || "bg-gray-300"
+  return (<div className={`px-5 py-2 flex flex-row items-center justify-evenly w-[15%]  rounded-full h-[4vh]  ${statusColors[status] || "bg-gray-300"
     }`}>
     {props.editable ? <select
       value={status}
@@ -36,13 +36,13 @@ export default function StatusDropdown(props: {
           }
         });
       }}
-      className="bg-transparent border-none"
+      className="bg-transparent border-none w-full  text-center"
     >
       <option value="submited" className=" w-full bg-red ">Submited</option>
       <option value="printing" className=" w-full bg-red ">Printing</option>
       <option value="complete" className=" w-full bg-red ">Complete</option>
       <option value="rejected" className=" w-full bg-red ">Rejected</option>
-    </select> : <div>{status}</div>
+    </select> : <div className="  text-center">{status}</div>
       }
   </div>)
 }
