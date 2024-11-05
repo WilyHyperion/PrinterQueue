@@ -34,7 +34,6 @@ export default function StatusDropdown(props: {
           headers: {
             "Content-Type": "application/json",
           }
-          //todo header
         });
       }}
       className="bg-transparent border-none"

@@ -19,7 +19,7 @@ export default function BrowseJobs() {
           <text>Order Submissions</text>
         </div>
         <div className="h-full">
-          <JobChart jobs={jobs} setJobs ={setJobs} />
+          <JobChart jobs={jobs} setJobs ={setJobs} editable />
         </div>
       </div>
     </div>
