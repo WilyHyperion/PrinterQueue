@@ -11,7 +11,7 @@ import { ObjectId } from "mongodb";
 export  default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Job[] | {error: string}>,
-) {
+) { 
     let user = await auth(req, res)
     if(!user){
         res.status(401).json({ error: "Not authorized" })
