@@ -39,7 +39,7 @@ function calcVars(contents: any, setLoading: any, infillDensity: any, setPrintTi
 
         setPrintTime(printTimeHours.toFixed(2));
         setCost(costAmount.toFixed(2));
-      } catch (err) {
+      } catch (err) { 
         console.error(err);
         setError('Failed to parse the STL file. Please ensure it is a valid file.');
       } finally {

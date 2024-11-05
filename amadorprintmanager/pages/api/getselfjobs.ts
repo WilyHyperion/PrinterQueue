@@ -17,7 +17,7 @@ export  default async function handler(
         res.status(401).json({ error: "Not authorized" })
         return
     }
-    if(!user?.user){
+    if(!user?.user){            
         res.status(401).json({ error: "Not authorized" })
         return
     }
@@ -39,7 +39,6 @@ export  default async function handler(
     for(let job of jobs)
     {
         job.id = job._id
-
         job.user = jobuser
     }
     res.status(200).json(jobs)

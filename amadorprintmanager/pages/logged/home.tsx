@@ -3,13 +3,11 @@ import { Job } from "@/types/types";
 import { signOut, useSession } from "next-auth/react"
 import { useEffect, useState } from "react";
 export default function Home() {
-    const [jobs, setJobs] = useState([
-    ] as Job[])
+    const [jobs, setJobs] = useState(null as Job[] | null)
     useEffect(() => {
         fetch("/api/getselfjobs").then(async (res) => {
             let t = await res.json()
             setJobs(t)
-            console.log(t)
         })
     }, [])
     const s  = useSession()
