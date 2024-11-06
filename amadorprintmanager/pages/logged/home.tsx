@@ -2,6 +2,7 @@ import JobChart from "@/components/jobChart";
 import { Job } from "@/types/types";
 import { signOut, useSession } from "next-auth/react"
 import { useEffect, useState } from "react";
+
 export default function Home() {
     const [loading, setLoading] = useState(true)
     const [jobs, setJobs] = useState(null as Job[] | null)
@@ -14,22 +15,43 @@ export default function Home() {
     }, [])
     const s = useSession()
     return (
-        <div>
-            <div className="absolute top-0 h-fit w-full bg-gradient-to-r from-purple-300 via-white to-yellow-100 flex justify-between items-center p-4">
-                <h1 className="text-black text-xl px-2 flex items-center">Home</h1>
-                <div className="flex space-x-2">
-                    {s?.data?.user.role == "teacher" && <a href="/logged/browse" className="flex items-center y-2 px-4 py-.5 bg-purple-700 rounded-xl text-black">Check Submitted Jobs</a>}
-                    <button className="flex items-center y-2 px-4 py-.5 bg-purple-700 rounded-xl text-black">Account settings</button>
-                    <button onClick={() => { signOut() }} className="flex items-center y-2 px-6 py-.5 bg-yellow-400 rounded-xl text-black">Logout</button>
+        <div className=" bg-gradient-to-r h-full from-indigo-900 via-purple-800 to-purple-900">
+            <header className="sticky top-0 bg-gradient-to-r from-purple-300 via-white to-yellow-100 shadow-md p-2 flex justify-between items-center">
+                <h1 className="text-black text-2xl font-semibold">Home</h1>
+                <div className="flex space-x-4">
+                    {s?.data?.user?.role === "teacher" && (
+                        <a href="/logged/browse" className="px-4 py-2 bg-purple-700 rounded-xl text-white hover:bg-purple-600 transition">
+                            Check Submitted Jobs
+                        </a>
+                    )}
+                    <a href="/logged/submitjob">
+                    <button
+                        className="px-4 py-2 bg-purple-700 rounded-xl text-white hover:bg-purple-600 transition"
+                    >
+                        Submit Job
+                    </button>
+                    </a>
+                    <button className="px-4 py-2 bg-purple-700 rounded-xl text-white hover:bg-purple-600 transition">
+                        Account Settings
+                    </button>
+                    <button
+                        onClick={() => { signOut(); }}
+                        className="px-4 py-2 bg-yellow-400 rounded-xl text-black hover:bg-yellow-300 transition"
+                    >
+                        Logout
+                    </button>
                 </div>
-            </div>
-            {loading ? <div className="w-full min-h-screen flex items-center text-black justify-center">Loading your jobs   </div> : <div className="flex justify-center bg-gradient-to-r from-indigo-900 via-purple-800 to-purple-900 w-screen h-screen">
-                <JobChart jobs={
-                    jobs
-                } setJobs={setJobs} editable={false}></JobChart>
+            </header>
 
-            </div>}
+            {loading ? (
+                <div className="flex justify-center items-center min-h-[calc(90vh-5rem)] text-black text-xl">
+                    Loading your jobs...
+                </div>
+            ) : (
+                <div className="flex justify-center text-black py-10">
+                    <JobChart jobs={jobs} setJobs={setJobs} editable={false} />
+                </div>
+            )}
         </div>
-
-    )
-}
+    );
+};
