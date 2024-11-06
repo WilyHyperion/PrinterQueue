@@ -24,7 +24,7 @@ export default function STLModelUploader() {
     if (selectedFile && selectedFile.name.endsWith('.stl')) {
       setFile(selectedFile);
       calculateMetrics(selectedFile);
-      setError(''); // Clear previous error
+      setError('');
     } else {
       setError('Please upload a valid STL file.');
     }
@@ -153,6 +153,7 @@ export default function STLModelUploader() {
           <select
               className="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
               id="grid-state"
+              name="color"
             >
               {colors.map((option, index) => (
                 <option key={index} value={option}>
@@ -168,6 +169,7 @@ export default function STLModelUploader() {
           <select
               className="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
               id="grid-state"
+              name="printer"
             >
               {printers.map((option, index) => (
                 <option key={index} value={option}>
@@ -179,7 +181,7 @@ export default function STLModelUploader() {
               <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
             </div>
           </div>
-          <textarea type="text" name="request" placeholder="Enter Special Requests" className="input text-black text-wrap input-bordered w-full h-auto mb-4 p-2 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-purple-500"/>
+          <textarea type="text" name="notes" placeholder="Enter Special Requests" className="input text-black text-wrap input-bordered w-full h-auto mb-4 p-2 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-purple-500"/>
           <button type="submit" className="btn btn-primary bg-purple-600 hover:bg-purple-700 text-white font-semibold rounded-lg px-4 py-2">Submit</button>
         </form>
        <STLRender stlFile = {file}  />
