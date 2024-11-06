@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import { STLLoader } from 'three/examples/jsm/loaders/STLLoader.js';
 import * as THREE from 'three';
 import STLRender from '@/components/stlRender';
+import { pass } from 'three/webgpu';
 
 const colors =["Select Material","Any","Yellow","Blue","Purple","Black","Teal","White"]
 const printers =["Select Printer","Any (Non engineering Students select this)","Prusa","Bambu Lab"]
@@ -13,9 +14,13 @@ export default function STLModelUploader() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [infillDensity, setInfillDensity] = useState(20); // Default to 20% infill
+  
+
 
   const handleFileChange = (event: { target: { files: any[]; }; }) => {
     const selectedFile = event.target.files[0];
+    
+
     if (selectedFile && selectedFile.name.endsWith('.stl')) {
       setFile(selectedFile);
       calculateMetrics(selectedFile);
@@ -59,6 +64,8 @@ export default function STLModelUploader() {
     reader.readAsArrayBuffer(file);
   };
 
+  
+
   const calculateVolume = (geometry) => {
     let volume = 0;
     const faces = geometry.attributes.position.count;
@@ -85,10 +92,23 @@ export default function STLModelUploader() {
       volume += (1 / 6) * Math.abs(a.dot(b.cross(c)));
     }
 
+
+
     return Math.abs(volume);
   };
+  useEffect(() => {
+    if (file) {
+      calculateMetrics(file);
+    }
+  }, [infillDensity]);
 
-
+  const recalculateMetrics = () => {
+    if (file) {
+      calculateMetrics(file);
+    } else {
+      setError('No file available for recalculation. Please upload a file first.');
+    }
+  };
 
   return (
     <div className="flex items-center justify-center bg-gradient-to-r from-indigo-900 via-purple-800 to-purple-900 w-screen h-screen">
@@ -109,7 +129,10 @@ export default function STLModelUploader() {
           <input
             type="number"
             value={infillDensity}
-            onChange={(e) => setInfillDensity(e.target.value)}
+            onChange={(e) => {
+              setInfillDensity(e.target.value);
+              recalculateMetrics();
+            }}
             className="input input-bordered w-full mb-4 p-2 border-2 text-black border-gray-300 rounded-lg focus:outline-none focus:border-purple-500"
             min="0"
             max="100"
