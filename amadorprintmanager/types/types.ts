@@ -22,3 +22,9 @@ export interface User {
     _id: string;
     id: string;
 }
+
+ interface Filter{
+    field: string;
+    op: Function
+    params: any[]
+}

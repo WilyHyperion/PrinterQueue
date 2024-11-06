@@ -1,4 +1,4 @@
-import { Job } from "@/types/types";
+import { Filter, Job } from "@/types/types";
 import { useEffect, useState } from "react";
 import StatusDropdown from "./statusDropdown";
 import Image from "next/image";
@@ -6,6 +6,7 @@ interface JobChartProps {
   jobs: Job[] | null;
   setJobs: any;
   editable: boolean;
+  filters?: Filter[]
 }
 const literalToPrettyName = {
   "name": "Job Name",
