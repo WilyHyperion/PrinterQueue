@@ -68,7 +68,7 @@ class Not extends Filter {
     inputTypes = [String]
     shouldRemove(o: string): boolean {
 
-        return o != this.inputs[0]
+        return o == this.inputs[0]
     }
     vaildCatagoies = [
         "*"
@@ -98,7 +98,7 @@ class Is extends Filter {
     name = "Is"
     inputTypes = [String]
     shouldRemove(o: string): boolean {
-        return o == this.inputs[0]
+        return o != this.inputs[0]
     }
     vaildCatagoies = [
         "*"
@@ -124,6 +124,28 @@ class IsBetween extends Filter {
         "date"
     ];
 }
+class LessThan extends Filter {
+    name = "Less Than"
+    inputTypes = [Number]
+    shouldRemove(o: string): boolean {
+        return parseFloat(o.replace('$', '').replace('Hours', '')) > parseInt(this.inputs[0])
+    }
+    vaildCatagoies = [
+        "cost",
+        "printTime"
+    ];
+}
+class GreaterThan extends Filter {
+    name = "Less Than"
+    inputTypes = [Number]
+    shouldRemove(o: string): boolean {
+        return parseFloat(o.replace('$', '').replace('Hours', '')) < parseInt(this.inputs[0])
+    }
+    vaildCatagoies = [
+        "cost",
+        "printTime"
+    ];
+}
 
 export const FilterTypes = [
     Not,
@@ -131,5 +153,7 @@ export const FilterTypes = [
     Contains,
     Is,
     IsAfter,
-    IsBetween
+    IsBetween,
+    LessThan,
+    GreaterThan
 ]

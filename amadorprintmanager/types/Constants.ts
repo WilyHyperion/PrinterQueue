@@ -14,6 +14,7 @@ export const printers = [
   "Prusa",
   "Bambu Lab",
 ];
+//also controls the collumns that are displayed
 export const literalToPrettyName = {
   name: "Job Name",
   date: "Date",
