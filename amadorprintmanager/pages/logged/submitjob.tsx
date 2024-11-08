@@ -12,7 +12,8 @@ export default function STLModelUploader() {
   const [cost, setCost] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const [infillDensity, setInfillDensity] = useState(20); // Default to 20% infill
+  const [color, setColor] = useState(undefined as string | number | undefined);
+  const [infillDensity, setInfillDensity] = useState('20'); // Default to 20% infill
   const handleFileChange = (event: { target: { files: any[]; }; }) => {
     const selectedFile = event.target.files[0];
     
@@ -150,6 +151,9 @@ export default function STLModelUploader() {
               className="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
               id="grid-state"
               name="color"
+              onChange={(e) => {
+                console.log(e.target.value)
+                setColor(e.target.value)}}
             >
               {colors.map((option, index) => (
                 <option key={index} value={option}>
@@ -180,7 +184,7 @@ export default function STLModelUploader() {
           <textarea type="text" name="notes" placeholder="Enter Special Requests" className="input text-black text-wrap input-bordered w-full h-auto mb-4 p-2 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-purple-500"/>
           <button type="submit" className="btn btn-primary bg-purple-600 hover:bg-purple-700 text-white font-semibold rounded-lg px-4 py-2">Submit</button>
         </form>
-       <STLRender stlFile = {file}  />
+       <STLRender stlFile = {file} color={color}  />
       </div>
     </div>
   );

@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import JobChart from "@/components/jobChart";
 import Image from "next/image";
-import { Filter, FilterTypes, getInputElement } from "@/types/Filters";
+import { equalFilters, Filter, FilterTypes, getInputElement } from "@/types/Filters";
 import { literalToPrettyName } from "@/types/Constants";
 
 export default function BrowseJobs() {
@@ -48,7 +48,7 @@ export default function BrowseJobs() {
           {open && (
             <div className="absolute top-[5%] p-[3%] bg-white w-1/4 rounded-xl flex flex-col">
               <button
-                className=" text-black absolute right-0 text-black" 
+                className="  absolute right-0 text-black" 
                 onClick={() => {
                   setOpen(false);
                 }}
@@ -128,7 +128,7 @@ export default function BrowseJobs() {
                 <button
                   className=""
                   onClick={(e) => {
-                    setFilter(filter.filter((o) => o != obj));
+                    setFilter(filter.filter((o) => equalFilters(o, obj) ));
                   }}
                 >
                   x

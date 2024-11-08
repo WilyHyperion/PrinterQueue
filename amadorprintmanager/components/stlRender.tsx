@@ -1,10 +1,11 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import * as THREE from 'three';
 import { STLLoader } from 'three/examples/jsm/loaders/STLLoader.js';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 
 interface StlRenderProps {
     stlFile: File | null;
+    color: string | number | undefined; 
 }
 
 export default function STLRender(props: StlRenderProps) {
@@ -49,8 +50,8 @@ export default function STLRender(props: StlRenderProps) {
             const maxDimension = Math.max(size.x, size.y, size.z);
             const fitOffset = 1.25; 
             camera.position.z = maxDimension * fitOffset; 
-
-            const material = new THREE.MeshPhongMaterial({ color: 0x4a90e2, shininess: 100 });
+  
+            const material = new THREE.MeshPhongMaterial({ color: props.color || 0x4a90e2, shininess: 100 });
             const mesh = new THREE.Mesh(geometry, material);
             scene.add(mesh);
 
@@ -79,7 +80,10 @@ export default function STLRender(props: StlRenderProps) {
             renderSTLModel(props.stlFile);
         }
     }, [props.stlFile]);
-
+    useEffect(() => {
+      if(props.stlFile)
+      renderSTLModel(props.stlFile);
+    }, [props.color]);
     return (
       <div className="relative bg-gray-50 rounded-lg shadow-inner flex items-center justify-center h-[450px]">
       <div ref={viewerRef} className="w-full h-full flex justify-center" />

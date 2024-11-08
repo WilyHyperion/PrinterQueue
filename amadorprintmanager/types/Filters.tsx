@@ -51,10 +51,15 @@ const inputTypesToElement = {
     "String": "text",
     "Number": "number",
     "Date": "date",
+} as {
+    [key: string]: string
 }
 export function getInputElement (type: string, onChange: (e: any) => void){
     return (
         <input type = {inputTypesToElement[type] } onChange = {onChange} className = "bg-gray-500 text-black "></input>)
+}
+export function equalFilters(first : Filter, other: Filter) {
+    return first.name == other.name && first.catagory == other.catagory && first.inputs == other.inputs
 }
 export abstract class Filter implements Filter {
     constructor(inputs: any[], catagory: string) {
@@ -62,6 +67,8 @@ export abstract class Filter implements Filter {
         this.inputs = inputs
     }
     inputs: any[]
+
+    
 }
 class Not extends Filter {
     name = "Not"
@@ -73,6 +80,8 @@ class Not extends Filter {
     vaildCatagoies = [
         "*"
     ]
+
+
 }
 class DoesNotContain extends Filter {
     name = "Doesn't Contain"
