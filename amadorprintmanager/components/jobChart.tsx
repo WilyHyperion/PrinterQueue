@@ -3,29 +3,18 @@ import { useEffect, useState } from "react";
 import StatusDropdown from "./statusDropdown";
 import Image from "next/image";
 import { Filter } from "@/types/Filters";
+import { literalToPrettyName } from "@/types/Constants";
 interface JobChartProps {
   jobs: Job[] | null;
   setJobs: any;
   editable: boolean;
   filters?: Filter[]
 }
-const literalToPrettyName = {
-  "name": "Job Name",
-  "date": "Date",
-  "userId": "SSID",
-  "cost": "Est. Cost",
-  "printTime": "Est. Time",
-  "printer": "Printer",
-  "color": "Color",
 
-} as {
-  [key: string]: string
-}
 export default function JobChart(props: JobChartProps) {
   const [sort, setSort] = useState("date");
   useEffect(() => {
     if (props.filters) {
-      console.log(actualJobs)
       let newjobs = props.jobs?.filter((job) => {
         let ret = true
         for (let filter of props.filters || []) {
@@ -38,12 +27,12 @@ export default function JobChart(props: JobChartProps) {
       console.log(newjobs, "newjobs")
       setActual(newjobs || [])
     }
-    else {     
+    else {
       setActual(props.jobs || [])
     }
-  }, [props.filters]);
+  }, [props.filters, props.jobs]);
 
-  const [actualJobs, setActual ] = useState(props.jobs);
+  const [displayJobs, setActual ] = useState(props.jobs);
   useEffect(()=> {
     setActual(props.jobs)
   }, [props.jobs])
@@ -51,7 +40,7 @@ export default function JobChart(props: JobChartProps) {
     let nsort = sort
     if (sort.includes("-")) {
       nsort = sort.slice(0, sort.length - 1)
-    } 
+    }
     let newjobs = props.jobs?.sort((a, b) => {
       console.log(a, b)
       //because our database forces everything to string, we have to do some hardcoding here
@@ -116,19 +105,19 @@ export default function JobChart(props: JobChartProps) {
       </div>
       <div className="w-full min-h-[90vh] ">
 
-        {props.jobs != null ? props.jobs.length === 0 && (
+        {displayJobs != null ? displayJobs.length === 0 && (
           <div className="w-full h-full flex justify-center items-center bg-transparent">
             <h2>No jobs to display</h2>
           </div>
         )
-          : 
+          :
           <div className="w-full h-full flex justify-center items-center">
             <h2>Loading Jobs...</h2>
           </div>
         }
         {
-          props.jobs &&
-          props.jobs.length > 0 && props.jobs.map((job) => {
+          displayJobs &&
+          displayJobs.length > 0 && displayJobs.map((job) => {
             return (
               <div className="w-full h-[10%] p-5  text-black flex justify-between px-5 border-b-indigo-900 border-b-2 m-5" >
                 <div className="flex flex-row items-center justify-evenly w-[80%] ">
