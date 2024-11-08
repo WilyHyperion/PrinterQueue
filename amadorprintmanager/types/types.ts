@@ -21,10 +21,5 @@ export interface User {
     studentID: number;
     _id: string;
     id: string;
-}
+}       
 
- interface Filter{
-    field: string;
-    op: Function
-    params: any[]
-}

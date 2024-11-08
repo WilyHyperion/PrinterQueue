@@ -3,9 +3,8 @@ import { STLLoader } from 'three/examples/jsm/loaders/STLLoader.js';
 import * as THREE from 'three';
 import STLRender from '@/components/stlRender';
 import { pass } from 'three/webgpu';
-
-const colors =["Select Material","Any","Yellow","Blue","Purple","Black","Teal","White"]
-const printers =["Select Printer","Any (Non engineering Students select this)","Prusa","Bambu Lab"]
+import { FilterTypes } from '@/types/Filters';
+import { colors, printers} from "@/types/Constants"
 
 export default function STLModelUploader() {
   const [file, setFile] = useState(null);
@@ -14,9 +13,6 @@ export default function STLModelUploader() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [infillDensity, setInfillDensity] = useState(20); // Default to 20% infill
-  
-
-
   const handleFileChange = (event: { target: { files: any[]; }; }) => {
     const selectedFile = event.target.files[0];
     

@@ -1,7 +1,8 @@
-import { Filter, Job } from "@/types/types";
+import {  Job } from "@/types/types";
 import { useEffect, useState } from "react";
 import StatusDropdown from "./statusDropdown";
 import Image from "next/image";
+import { Filter } from "@/types/Filters";
 interface JobChartProps {
   jobs: Job[] | null;
   setJobs: any;
@@ -22,6 +23,30 @@ const literalToPrettyName = {
 }
 export default function JobChart(props: JobChartProps) {
   const [sort, setSort] = useState("date");
+  useEffect(() => {
+    if (props.filters) {
+      console.log(actualJobs)
+      let newjobs = props.jobs?.filter((job) => {
+        let ret = true
+        for (let filter of props.filters || []) {
+          if (filter.shouldRemove(job[filter.catagory])) {
+            ret = false
+          }
+        }
+        return ret
+      });
+      console.log(newjobs, "newjobs")
+      setActual(newjobs || [])
+    }
+    else {     
+      setActual(props.jobs || [])
+    }
+  }, [props.filters]);
+
+  const [actualJobs, setActual ] = useState(props.jobs);
+  useEffect(()=> {
+    setActual(props.jobs)
+  }, [props.jobs])
   useEffect(() => {
     let nsort = sort
     if (sort.includes("-")) {
