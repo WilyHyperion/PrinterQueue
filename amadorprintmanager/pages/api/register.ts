@@ -4,6 +4,10 @@ import { auth, signIn } from '@/auth';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     let t = await addUser(req.body.email, req.body.password, req.body.studentID)
+    if(!t){
+        res.status(500).json({ error: "Error adding user" })
+        return
+    }
     if(t && t.error) {
         res.status(400).json({ error: t.error })
         return
