@@ -13,7 +13,9 @@ export interface Job {
     teacherNotes: string;
     printTime: string;
     cost: string;
-    [key: string]: any
+    specialRequests: string;
+    [key: string]: any;
+
 }
 export interface User {
     email: string;

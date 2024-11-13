@@ -26,3 +26,11 @@ export const literalToPrettyName = {
 } as {
   [key: string]: string;
 };
+export const statusColors = {
+  "submited": "bg-yellow-300",
+  "printing": "bg-blue-300",
+  "complete": "bg-green-300",
+  "rejected": "bg-red-300",
+} as {
+  [key: string]: string
+}

@@ -13,25 +13,27 @@ export  default async function handler(
   res: NextApiResponse,
 ) {
     let user = await auth(req, res)
-    if(!user){
-        console.log("failed")
+    if(!user || !user?.user ){
+        res.status(401).json({
+            message: "failed"
+        })
         return
     }
     if(!user?.user){
-        console.log("failed")
         return
     }
     if(user?.user.role !== "teacher") {
-        console.log("failede")
+        res.status(401).json({
+            message: "failed"
+        })
         return 
     }
-    console.log(req.body)
-    let job = await db.collection("Jobs").updateOne({
-        _id: new ObjectId(req.body.id)   
+    await db.collection("Jobs").updateOne({
+        _id: new ObjectId(req.body.id)
     }, {
         $set: {
-            status: 
-                 req.body.status   
+            teacherResponse:
+                 req.body.response
         }
     })
     res.status(200).json({

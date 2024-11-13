@@ -7,11 +7,11 @@ import { FilterTypes } from '@/types/Filters';
 import { colors, printers} from "@/types/Constants"
 
 export default function STLModelUploader() {
-  const [file, setFile] = useState(null);
-  const [printTime, setPrintTime] = useState(null);
-  const [cost, setCost] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
+  const [file, setFile] = useState(null as Blob | null);
+  const [printTime, setPrintTime] = useState(null as string | null);
+  const [cost, setCost] = useState(null as string | null);
+  const [loading, setLoading] = useState(false as boolean);
+  const [error, setError] = useState('' );
   const [color, setColor] = useState(undefined as string | number | undefined);
   const [infillDensity, setInfillDensity] = useState('20'); // Default to 20% infill
   const handleFileChange = (event: { target: { files: any[]; }; }) => {
@@ -63,7 +63,7 @@ export default function STLModelUploader() {
 
   
 
-  const calculateVolume = (geometry) => {
+  const calculateVolume = (geometry: THREE.BufferGeometry<THREE.NormalBufferAttributes>) => {
     let volume = 0;
     const faces = geometry.attributes.position.count;
 
@@ -110,7 +110,33 @@ export default function STLModelUploader() {
   return (
     <div className="flex items-center justify-center bg-gradient-to-r from-indigo-900 via-purple-800 to-purple-900 w-screen h-screen">
       <div className="grid grid-cols-2 gap-8 p-10 bg-white rounded-lg shadow-xl max-w-5xl">
-        <form className="flex flex-col space-y-6" action="/api/jobsubmit" method="post" encType="multipart/form-data">
+        <form className="flex flex-col space-y-6" action="/api/jobsubmit" method="post" encType="multipart/form-data" onSubmit = {
+          (e) => {
+            const form = e.target as HTMLFormElement;
+            const formData = new FormData(form);
+            if(!file){
+              setError('Please upload a valid STL file.');
+              e.preventDefault();
+              return;
+            }
+            if(!formData.get("name")){
+              setError('Please enter a model name.');
+              e.preventDefault();
+              return;
+            }
+            if(!formData.get("color") || formData.get("color") === "Select Material"){
+              setError('Please select a color.');
+              e.preventDefault();
+              return;
+            }
+            if(!formData.get("printer") || formData.get("printer") === "Select Printer"){
+              setError('Please select a printer.');
+              e.preventDefault();
+              return;
+            }
+
+          }
+        }>
           <h2 className="text-3xl font-semibold text-gray-700">Upload STL Model</h2>
           <input
             name="file"
@@ -118,6 +144,7 @@ export default function STLModelUploader() {
             accept=".stl"
             onChange={handleFileChange}
             className="file-input file-input-bordered w-full mb-4 border-2 border-gray-300 rounded-lg shadow-sm focus:outline-none focus:border-purple-500"
+            required
           />
           <div>
           <text className="text-black -mb-4">
@@ -145,7 +172,7 @@ export default function STLModelUploader() {
               <p className="text-gray-700 font-medium">Estimated Cost: <span className="text-purple-700">${cost}</span></p>
             </div>
           )}
-          <input type="text" name="name" placeholder="Enter Model Name" className="input text-black input-bordered w-full mb-4 p-2 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-purple-500" required />
+          <input type="text" name="name" placeholder="Enter Model Name"  required className="input text-black input-bordered w-full mb-4 p-2 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-purple-500"  />
           <div className="relative">
           <select
               className="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
@@ -170,6 +197,7 @@ export default function STLModelUploader() {
               className="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
               id="grid-state"
               name="printer"
+              required
             >
               {printers.map((option, index) => (
                 <option key={index} value={option}>

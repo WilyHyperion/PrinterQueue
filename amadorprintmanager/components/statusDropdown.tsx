@@ -1,13 +1,7 @@
+import { statusColors } from "@/types/Constants";
 import { useEffect, useState } from "react";
 
-const statusColors = {
-  "submited": "bg-yellow-300",
-  "printing": "bg-blue-300",
-  "complete": "bg-green-300",
-  "rejected": "bg-red-300",
-} as {
-  [key: string]: string
-}
+
 export default function StatusDropdown(props: {
   defaultValue: string,
   id: string,
@@ -38,10 +32,11 @@ export default function StatusDropdown(props: {
       }}
       className="bg-transparent border-none w-full  text-center"
     >
-      <option value="submited" className=" w-full bg-red ">Submited</option>
-      <option value="printing" className=" w-full bg-red ">Printing</option>
-      <option value="complete" className=" w-full bg-red ">Complete</option>
-      <option value="rejected" className=" w-full bg-red ">Rejected</option>
+      {
+        Object.keys(statusColors).map((key) => {
+          return <option key={key} value={key}>{key.substring(0,1).toUpperCase() + key.substring(1)}</option>
+        })
+      }
     </select> : <div className="  text-center">{status}</div>
       }
   </div>)
