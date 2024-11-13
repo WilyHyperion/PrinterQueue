@@ -3,6 +3,7 @@ import { Job } from "@/types/types"
 import { use, useEffect, useState } from "react"
 import { useSession } from "next-auth/react"
 import StatusDropdown from "@/components/statusDropdown"
+import Image from "next/image"
 
 
 
@@ -10,6 +11,7 @@ export default function JobView() {
     const [job, setJob] = useState(null as Job | null)
     const s = useSession();
     const [teacherMessage, setTeacherMessage] = useState("")
+    const [file, setFile] = useState(null as File | null)
     useEffect(() => {
         //use router was not working for some reason
         let id = window.location.pathname.split("/")[3]
@@ -96,9 +98,21 @@ export default function JobView() {
                         </div>
 
                         <div className="mt-10">
+                            <div className = "flex flex-row justify-between items-center">
                             <h3 className="text-lg font-medium text-gray-700">STL Model Preview:</h3>
+                            <button className="bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2 px-4 rounded-lg text-center align-middle h-full" onClick={() => {
+                                if(file){
+                                    let a = document.createElement("a")
+                                    a.href = URL.createObjectURL(file)
+                                    a.download = `job-${job.user?.name}-${job.user?.studentID}-${job.id}.stl`
+                                    a.click()
+                                }
+                             }}>
+                                Download
+                            </button>
+                            </div>
                             <div className="mt-4">
-                                <StlFromID id={job.id} />
+                                <StlFromID id={job.id} setFile = {setFile} />
                             </div>
                         </div>
                     </div>

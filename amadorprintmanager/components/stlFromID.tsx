@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import STLRender from "./stlRender";
 
-export default function StlFromID(props: { id: string }) {
+export default function StlFromID(props: { id: string, setFile: any }) {
 
   const [file, setFile] = useState(null as File | null);
   useEffect(() => {
@@ -17,6 +17,7 @@ export default function StlFromID(props: { id: string }) {
         let blob = await res.blob();
         let file = new File([blob], "stl");
         setFile(file);
+        props.setFile(file);
     });
   }, []);
   return <div>{file ? <STLRender stlFile={file} /> : <div>Loading...</div>}</div>;
