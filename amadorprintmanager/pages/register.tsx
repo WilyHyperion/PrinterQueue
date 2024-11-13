@@ -1,3 +1,4 @@
+import { signIn } from 'next-auth/react';
 import { useState } from 'react';
 
 export default function Register() {
@@ -30,10 +31,15 @@ export default function Register() {
       body: JSON.stringify(formData),
     })
       .then((res) => res.json())
-      .then((data) => {
+      .then(async (data) => {
         if (data.error) {
           setError(data.error);
         } else {
+          await signIn('credentials', {
+            email: email,
+            password: password,
+            callbackUrl: '/',
+          });
           window.location.href = '/logged/home';
         }
       });
