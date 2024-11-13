@@ -44,6 +44,7 @@ export interface Filter {
     inputs: any[]
     shouldRemove(o: string): boolean
     vaildCatagoies: string[]
+    inputLabels: string[]
 
 }
 
@@ -56,7 +57,7 @@ const inputTypesToElement = {
 }
 export function getInputElement (type: string, onChange: (e: any) => void){
     return (
-        <input type = {inputTypesToElement[type] } onChange = {onChange} className = "bg-gray-500 text-black "></input>)
+        <input type = {inputTypesToElement[type] } onChange = {onChange} className = "bg-[#e5e7eb] p-2 text-black w-full "></input>)
 }
 export function equalFilters(first : Filter, other: Filter) {
     return first.name == other.name && first.catagory == other.catagory && first.inputs == other.inputs
@@ -80,6 +81,7 @@ class Not extends Filter {
     vaildCatagoies = [
         "*"
     ]
+    inputLabels: string[] = ["Value"]
 
 
 }
@@ -92,6 +94,7 @@ class DoesNotContain extends Filter {
     vaildCatagoies = [
         "*"
     ]
+    inputLabels: string[] = ["Value"]
 }
 class Contains extends Filter {
     name = "Contains"
@@ -102,6 +105,7 @@ class Contains extends Filter {
     vaildCatagoies = [
         "*"
     ]
+    inputLabels: string[] = ["Value"]
 }
 class Is extends Filter {
     name = "Is"
@@ -112,6 +116,7 @@ class Is extends Filter {
     vaildCatagoies = [
         "*"
     ]
+    inputLabels: string[] = ["Value"]
 }
 class IsAfter extends Filter {
     name = "Is After"
@@ -122,6 +127,7 @@ class IsAfter extends Filter {
     vaildCatagoies = [
         "date"
     ];
+    inputLabels: string[] = ["Value"]
 }
 class IsBetween extends Filter {
     name = "Is Between"
@@ -132,6 +138,7 @@ class IsBetween extends Filter {
     vaildCatagoies = [
         "date"
     ];
+    inputLabels: string[] = ["Start", "End"]
 }
 class LessThan extends Filter {
     name = "Less Than"
@@ -143,6 +150,7 @@ class LessThan extends Filter {
         "cost",
         "printTime"
     ];
+    inputLabels: string[] = ["Value"]
 }
 class GreaterThan extends Filter {
     name = "Less Than"
@@ -154,6 +162,8 @@ class GreaterThan extends Filter {
         "cost",
         "printTime"
     ];
+
+    inputLabels: string[] = ["Value"]
 }
 
 export const FilterTypes = [

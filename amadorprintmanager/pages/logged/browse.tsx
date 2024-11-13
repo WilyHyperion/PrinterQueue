@@ -5,7 +5,6 @@ import JobChart from "@/components/jobChart";
 import Image from "next/image";
 import { equalFilters, Filter, FilterTypes, getInputElement } from "@/types/Filters";
 import { literalToPrettyName } from "@/types/Constants";
-
 export default function BrowseJobs() {
   const [jobs, setJobs] = useState([] as Job[]);
   const [filter, setFilter] = useState([] as Filter[]);
@@ -46,19 +45,25 @@ export default function BrowseJobs() {
             Add Filter
           </button>{" "}
           {open && (
-            <div className="absolute top-[5%] p-[3%] bg-white w-1/4 rounded-xl flex flex-col">
-              <button
-                className="  absolute right-0 text-black" 
+            <div className={`absolute top-[5%] p-[3%] border-gray-300 border-2 bg-gray-50 w-1/4 rounded-xl flex flex-col cursor-move `}  >
+              <Image
+                src={"/close.svg"}
+                alt="X"
+                width={20}
+                height={20}
+                className="  absolute right-2 top-2 text-black"
                 onClick={() => {
                   setOpen(false);
                 }}
-              >x</button>
+              ></Image>
+              <strong>Filter Column</strong>
               <select
-                className="text-black"
+                className="text-black p-2"
                 onChange={(e) => {
                   setSelectedCollumn(e.target.value);
                 }}
               >
+                <option selected disabled>--Choose A Collumn--</option>
                 {Object.keys(literalToPrettyName).map((key) => {
                   return (
                     <option value={key} className="bg-gray-500">
@@ -67,8 +72,10 @@ export default function BrowseJobs() {
                   );
                 })}
               </select>
+
+              <strong>Filter Type</strong>
               <select
-                className="p-5 text-black"
+                className=" p-2 text-black"
                 onChange={(e) => {
                   let FilterType = FilterTypes.find(
                     (FilterType) => FilterType.name == e.target.value
@@ -77,23 +84,24 @@ export default function BrowseJobs() {
                     console.log(FilterType);
                     setFilterMaking(new FilterType([] as any[], ""));
                     let inputs = [] as any[];
-                    for(let i = 0; i < new FilterType([] ,"").inputTypes.length; i++){
+                    for (let i = 0; i < new FilterType([], "").inputTypes.length; i++) {
                       inputs.push("")
                     }
                     setInputs(inputs);
                   }
                 }}
               >
+                <option selected disabled>--Choose A Filter Type--</option>
                 {FilterTypes.map((FilterType) => {
                   if (
                     (new FilterType([] as any[], "").vaildCatagoies?.includes(
                       selectedCollumn
-                    ) || new FilterType([] as any[], "").vaildCatagoies?.includes(
-                      "*"
+                    ) || (new FilterType([] as any[], "").vaildCatagoies?.includes(
+                      "*")
                     ))
                   ) {
                     return (
-                      <option value={FilterType.name} className="bg-gray-500">
+                      <option value={FilterType.name} className="p-2 bg-[#e5e7eb] text-black">
                         {FilterType.name.replace(/([A-Z])/g, " $1")}
                       </option>
                     );
@@ -103,20 +111,26 @@ export default function BrowseJobs() {
               {filterMaking &&
                 filterMaking.inputTypes.map((inputType, i) => {
                   let type = inputType.name;
-                  return getInputElement(type, (e) => {
-                    let newInputs = inputs;
-                    newInputs[i] = e.target.value;
-                    setInputs(newInputs);
-                  });
+                  return <div className="flex flex-row justify-between items-center">
+                    <strong className="w-[20%]">{filterMaking.inputLabels[i]}</strong>
+                    {getInputElement(type, (e) => {
+                      let newInputs = inputs;
+                      newInputs[i] = e.target.value;
+                      setInputs(newInputs);
+                    })
+                    }</div>;
                 })}
-                <button className = "bg-gray-500 text-black" onClick = {() => {
-                  if(filterMaking){
-                    filterMaking.inputs = inputs
-                    filterMaking.catagory = selectedCollumn
-                    console.log(filterMaking)
-                    setFilter([...filter, filterMaking])
+              <button className="bg-[#e5e7eb] mt-5 p-2 text-black" onClick={() => {
+                if (filterMaking) {
+                  if(filterMaking.inputs.includes("")){
+                    return
                   }
-                }}>Add Filter</button>
+                  filterMaking.inputs = inputs
+                  filterMaking.catagory = selectedCollumn
+                  
+                  setFilter([...filter, filterMaking])
+                }
+              }}>Add Filter</button>
             </div>
           )}
         </div>
@@ -128,7 +142,7 @@ export default function BrowseJobs() {
                 <button
                   className=""
                   onClick={(e) => {
-                    setFilter(filter.filter((o) => equalFilters(o, obj) ));
+                    setFilter(filter.filter((o) => equalFilters(o, obj)));
                   }}
                 >
                   x
