@@ -26,6 +26,7 @@ export const literalToPrettyName = {
 } as {
   [key: string]: string;
 };
+//remebmer to add the new status to the tailwind safelist
 export const statusColors = {
   "submited": "bg-yellow-300",
   "printing": "bg-blue-300",
