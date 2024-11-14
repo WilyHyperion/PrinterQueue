@@ -63,6 +63,7 @@ export default function BrowseJobs() {
                 left: drag.x,
               }}
               onMouseDown={(e) => {
+                return
                 document.onmouseup = (e) => {
                   setDrag({
                     x: e.pageX,

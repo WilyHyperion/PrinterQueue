@@ -1,5 +1,5 @@
 
-`
+const _ = `
 ⣆⠻⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⢋
 ⣿⣧⡈⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿Nah, I'd Hardcode⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠟⣠⣿
 ⣿⣿⣿⣦⡙⠻⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠟⣡⣾⣿⣿
@@ -76,7 +76,7 @@ class Not extends Filter {
     inputTypes = [String]
     shouldRemove(o: string): boolean {
 
-        return o == this.inputs[0]
+        return o != this.inputs[0]
     }
     vaildCatagoies = [
         "*"
@@ -89,7 +89,7 @@ class DoesNotContain extends Filter {
     name = "Doesn't Contain"
     inputTypes = [String]
     shouldRemove(o: string): boolean {
-        return o.includes(this.inputs[0])
+        return !o.includes(this.inputs[0])
     }
     vaildCatagoies = [
         "*"
@@ -100,7 +100,7 @@ class Contains extends Filter {
     name = "Contains"
     inputTypes = [String]
     shouldRemove(o: string): boolean {
-        return !o.includes(this.inputs[0])
+        return o.includes(this.inputs[0])
     }
     vaildCatagoies = [
         "*"
@@ -111,7 +111,7 @@ class Is extends Filter {
     name = "Is"
     inputTypes = [String]
     shouldRemove(o: string): boolean {
-        return o != this.inputs[0]
+        return o == this.inputs[0]
     }
     vaildCatagoies = [
         "*"
