@@ -4,6 +4,7 @@ import { use, useEffect, useState } from "react"
 import { useSession } from "next-auth/react"
 import StatusDropdown from "@/components/statusDropdown"
 import Image from "next/image"
+import Header from "@/components/header"
 
 
 
@@ -32,6 +33,7 @@ export default function JobView() {
 )
     return (
         <div className="bg-gradient-to-r h-auto from-indigo-900 via-purple-800 to-purple-900 w-full">
+            <Header />
             {job ? (
                 <div className="flex justify-center items-center p-10">
                     <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-4xl">
