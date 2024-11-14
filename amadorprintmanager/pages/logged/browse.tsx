@@ -98,7 +98,7 @@ export default function BrowseJobs() {
                       selectedCollumn
                     ) || (new FilterType([] as any[], "").vaildCatagoies?.includes(
                       "*")
-                    ))
+                      ))
                   ) {
                     return (
                       <option value={FilterType.name} className="p-2 bg-[#e5e7eb] text-black">
@@ -122,12 +122,12 @@ export default function BrowseJobs() {
                 })}
               <button className="bg-[#e5e7eb] mt-5 p-2 text-black" onClick={() => {
                 if (filterMaking) {
-                  if(filterMaking.inputs.includes("")){
+                  if (filterMaking.inputs.includes("")) {
                     return
                   }
                   filterMaking.inputs = inputs
                   filterMaking.catagory = selectedCollumn
-                  
+
                   setFilter([...filter, filterMaking])
                 }
               }}>Add Filter</button>
@@ -138,15 +138,32 @@ export default function BrowseJobs() {
           {filter.map((obj) => {
             return (
               <div>
-                {obj.name}
-                <button
+
+                {obj.catagory + " "}
+                {obj.name + " "}
+                {obj.inputs.map((input) => {
+                  return input;
+                })}
+                <Image
+                  alt="x"
+                  width={20}
+                  height={20}
+                  src="/close.svg"
                   className=""
                   onClick={(e) => {
-                    setFilter(filter.filter((o) => equalFilters(o, obj)));
+                    console.log(filter, "old")
+                    for (let f of filter) {
+                      if (equalFilters(f, obj)) {
+                        let newFilter = filter
+                        newFilter.splice(filter.indexOf(f), 1)
+                        console.log(newFilter, "new")
+                        setFilter(newFilter)
+                        break
+                      }
+                    }
                   }}
                 >
-                  x
-                </button>
+                </Image>
               </div>
             );
           })}

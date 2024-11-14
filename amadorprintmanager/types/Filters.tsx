@@ -60,7 +60,7 @@ export function getInputElement (type: string, onChange: (e: any) => void){
         <input type = {inputTypesToElement[type] } onChange = {onChange} className = "bg-[#e5e7eb] p-2 text-black w-full "></input>)
 }
 export function equalFilters(first : Filter, other: Filter) {
-    return first.name == other.name && first.catagory == other.catagory && first.inputs == other.inputs
+    return first.name == other.name && first.catagory == other.catagory
 }
 export abstract class Filter implements Filter {
     constructor(inputs: any[], catagory: string) {
@@ -118,11 +118,24 @@ class Is extends Filter {
     ]
     inputLabels: string[] = ["Value"]
 }
+
+//date
 class IsAfter extends Filter {
     name = "Is After"
     inputTypes = [Date]
     shouldRemove(o: string): boolean {
         return new Date(o).getTime() < new Date(this.inputs[0]).getTime()
+    }
+    vaildCatagoies = [
+        "date"
+    ];
+    inputLabels: string[] = ["Value"]
+}
+class IsBefore extends Filter {
+    name = "Is Before"
+    inputTypes = [Date]
+    shouldRemove(o: string): boolean {
+        return new Date(o).getTime() > new Date(this.inputs[0]).getTime()
     }
     vaildCatagoies = [
         "date"
@@ -140,6 +153,8 @@ class IsBetween extends Filter {
     ];
     inputLabels: string[] = ["Start", "End"]
 }
+
+//num
 class LessThan extends Filter {
     name = "Less Than"
     inputTypes = [Number]
@@ -166,6 +181,7 @@ class GreaterThan extends Filter {
     inputLabels: string[] = ["Value"]
 }
 
+
 export const FilterTypes = [
     Not,
     DoesNotContain,
@@ -174,5 +190,6 @@ export const FilterTypes = [
     IsAfter,
     IsBetween,
     LessThan,
-    GreaterThan
+    GreaterThan,
+    IsBefore
 ]
