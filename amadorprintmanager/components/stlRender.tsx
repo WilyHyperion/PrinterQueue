@@ -5,7 +5,7 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 
 interface StlRenderProps {
     stlFile: File | null;
-    color: string | number | undefined; 
+    color?: string | number | undefined; 
 }
 
 export default function STLRender(props: StlRenderProps) {
