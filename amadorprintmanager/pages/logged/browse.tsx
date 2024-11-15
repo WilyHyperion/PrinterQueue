@@ -21,7 +21,7 @@ export default function BrowseJobs() {
     x: 0,
     y: 0,
     dragging: false,
-  });
+  } as any);
   useEffect(() => {
     fetch("/api/getjobs").then(async (res) => {
       let t = await res.json();
@@ -63,27 +63,28 @@ export default function BrowseJobs() {
                 left: drag.x,
               }}
               onMouseDown={(e) => {
-                return
                 document.onmouseup = (e) => {
-                  setDrag({
-                    x: e.pageX,
-                    y: e.pageY,
-                    dragging: false,
-                  });
                   document.onmousemove = null;
                 };
                 document.onmousemove = (e) => {
-                  let offset = e.target as HTMLElement;
                   setDrag({
-                    x: e.clientX - offset.offsetTop,
-                    y: e.clientY - offset.offsetHeight,
+                    x: e.pageX - drag.offsetX,
+                    y: e.pageY - drag.offsetY,
+                    offsetX: drag.offsetX,
+                    offsetY: drag.offsetY,
                     dragging: true,
                   });
+
                 };
-                let offset = e.target as HTMLElement;
+                var rect = e.target.getBoundingClientRect();
+                var x = e.clientX - rect.left; //x position within the element.
+                var y = e.clientY - rect.top;  //y position within the element.
+
                 setDrag({
-                  x: e.clientX - offset.offsetTop,
-                  y: e.clientY - offset.offsetHeight,
+                  x:  e.pageX -x,
+                  y: e.pageY - y,
+                  offsetX: x,
+                  offsetY: y,
                   dragging: true,
                 });
               }}
