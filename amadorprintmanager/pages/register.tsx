@@ -7,7 +7,7 @@ export default function Register() {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
-
+  const [name, setName] = useState('');
   const handleSubmit = (e: any) => {
     e.preventDefault();
     // Validate passwords
@@ -22,6 +22,7 @@ export default function Register() {
       email: email,
       studentID: studentId,
       password: password,
+      name: name,
     };
     fetch('/api/register', {
       method: 'POST',
@@ -67,7 +68,17 @@ export default function Register() {
           className="bg-white text-black p-6 rounded-lg shadow-lg w-full max-w-sm"
         >
           <h2 className="text-2xl  font-bold mb-6 text-center">Register</h2>
+          <label htmlFor='credentials-name' className="block mb-2 "/>
+            Name
+            <input
+              type="text"
+              name="name"
+              placeholder="Name"
+              className="text-black w-full px-4 py-2 mt-1 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400"
+              required
+              onChange={(e) => setName(e.target.value)}
 
+            />
           <label htmlFor="credentials-email" className="block mb-2 ">
             School Email
             <input

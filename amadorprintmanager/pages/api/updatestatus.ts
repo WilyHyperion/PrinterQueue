@@ -21,7 +21,7 @@ export  default async function handler(
         console.log("failed")
         return
     }
-    if(user?.user.role !== "teacher") {
+    if(user?.user.role !== "operator") {
         console.log("failede")
         return 
     }

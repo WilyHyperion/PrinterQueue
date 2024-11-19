@@ -22,7 +22,7 @@ export  default async function handler(
     if(!user?.user){
         return
     }
-    if(user?.user.role !== "teacher") {
+    if(user?.user.role !== "operator") {
         res.status(401).json({
             message: "failed"
         })

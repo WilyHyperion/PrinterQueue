@@ -2,7 +2,7 @@
 import db from './db'
 
 const bcrypt = require('bcryptjs');
-    export async function addUser (email: String, password:String, studentID: number) {
+    export async function addUser (email: String, password:String, studentID: number, name: String) {
         //TODO Validate info
         let user = await db.collection("users").findOne({$or : [{email: email}, {studentID: studentID}]})
         if(user){
@@ -17,8 +17,10 @@ const bcrypt = require('bcryptjs');
         email: email,
         password: hashedPassword,
         studentID: studentID,
+        name: name,
         role: "student"
        })
+         return true
 
 
    }
