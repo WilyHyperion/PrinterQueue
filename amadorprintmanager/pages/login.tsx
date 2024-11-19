@@ -68,7 +68,7 @@ export default function SignIn() {
                 />
           </form>
            
-          <button 
+          {/* <button 
           onClick={() => signIn("google")}
           className="mt-4 rounded-md flex items-center border border-slate-300 py-2 px-4 text-center text-sm transition-all shadow-sm hover:shadow-lg text-yellow-400 hover:text-white hover:bg-slate-800 hover:border-slate-800 focus:text-white focus:bg-slate-800 focus:border-slate-800 active:border-slate-800 active:text-white active:bg-slate-800 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none" 
           type="button"
@@ -80,7 +80,7 @@ export default function SignIn() {
               className="h-5 w-5 mr-2"
             />
   Continue with Google
-</button>
+</button> */}
 
           <a href="/register" className="mt-4 text-indigo-400 hover:underline">
                 Create Account
