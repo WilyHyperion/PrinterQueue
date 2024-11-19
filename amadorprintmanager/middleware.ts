@@ -6,7 +6,7 @@ export async function middleware(request: NextRequest) {
     const cookies = request.cookies;
     for(let c of cookies){
       console.log(c)
-      if(c[0].includes('authjs')){
+      if(c[0].includes('token')){
         return NextResponse.next()
       }
     }
