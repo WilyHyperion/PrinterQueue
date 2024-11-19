@@ -22,7 +22,7 @@ export default function Register() {
       email: email,
       studentID: studentId,
       password: password,
-      name: name,
+      name: name, 
     };
     fetch('/api/register', {
       method: 'POST',

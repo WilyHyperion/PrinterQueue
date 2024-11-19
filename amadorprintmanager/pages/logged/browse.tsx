@@ -76,17 +76,17 @@ export default function BrowseJobs() {
                   });
 
                 };
-                var rect = e.target.getBoundingClientRect();
-                var x = e.clientX - rect.left; //x position within the element.
-                var y = e.clientY - rect.top;  //y position within the element.
+                // var rect = e.target.getBoundingClientRect();
+                // var x = e.clientX - rect.left; //x position within the element.
+                // var y = e.clientY - rect.top;  //y position within the element.
 
-                setDrag({
-                  x:  e.pageX -x,
-                  y: e.pageY - y,
-                  offsetX: x,
-                  offsetY: y,
-                  dragging: true,
-                });
+                // setDrag({
+                //   x:  e.pageX -x,
+                //   y: e.pageY - y,
+                //   offsetX: x,
+                //   offsetY: y,
+                //   dragging: true,
+                // });
               }}
             >
               <Image
