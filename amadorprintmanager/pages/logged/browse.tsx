@@ -1,5 +1,5 @@
 import { Job } from "@/types/types";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useSession } from "next-auth/react";
 import JobChart from "@/components/jobChart";
 import Image from "next/image";
@@ -10,18 +10,100 @@ import {
   getInputElement,
 } from "@/types/Filters";
 import { literalToPrettyName } from "@/types/Constants";
+const id = (x: any) => x;
+export const throttle = (f: { (event: any): void; (arg0: any): void; }) => {
+  let token: number | null = null,
+    lastArgs: any[] | null = null;
+  const invoke = () => {
+
+    // @ts-ignore
+    f(...lastArgs);
+    token = null;
+  };
+  const result = (...args: any[]) => {
+    lastArgs = args;
+    if (!token) {
+      token = requestAnimationFrame(invoke);
+    }
+  };
+  result.cancel = () => token && cancelAnimationFrame(token);
+  return result;
+};
+const useDraggable = ({ onDrag = id } = {}) => {
+  const [pressed, setPressed] = useState(false);
+  const position = useRef({ x: 0, y: 0 });
+  const ref: any = useRef();
+
+  const unsubscribe:any = useRef();
+  const legacyRef = useCallback((elem: any) => {
+
+    ref.current = elem;
+    if (unsubscribe.current) {
+      unsubscribe.current();
+    }
+    if (!elem) {
+      return;
+    }
+    const handleMouseDown = (e: { target: {
+      id: string; style: { userSelect: string; }; 
+}; }) => {
+      e.target.style.userSelect = "none";
+      if(e.target.id != "dragbox" ){
+        return;
+      }
+      setPressed(true);
+
+    };
+    elem.addEventListener("mousedown", handleMouseDown);
+    unsubscribe.current = () => {
+      elem.removeEventListener("mousedown", handleMouseDown);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!pressed) {
+      return;
+    }
+
+    const handleMouseMove = throttle((event) => {
+      if (!ref.current || !position.current) {
+        return;
+      }
+      const pos = position.current;
+      const elem = ref.current;
+      position.current = onDrag({
+        x: pos.x + event.movementX,
+        y: pos.y + event.movementY
+      });
+      elem.style.transform = `translate(${pos.x}px, ${pos.y}px)`;
+    });
+    const handleMouseUp = (e: any) => {
+      e.target.style.userSelect = "auto";
+      setPressed(false);
+    };
+    document.addEventListener("mousemove", handleMouseMove);
+    document.addEventListener("mouseup", handleMouseUp);
+    return () => {
+      handleMouseMove.cancel();
+      document.removeEventListener("mousemove", handleMouseMove);
+      document.removeEventListener("mouseup", handleMouseUp);
+    };
+  }, [pressed, onDrag]);
+
+  return [legacyRef, pressed];
+};
 export default function BrowseJobs() {
+
   const [jobs, setJobs] = useState([] as Job[]);
   const [filter, setFilter] = useState([] as Filter[]);
   const [open, setOpen] = useState(false);
   const [filterMaking, setFilterMaking] = useState(null as Filter | null);
   const [selectedCollumn, setSelectedCollumn] = useState("Date");
   const [inputs, setInputs] = useState([] as any[]);
-  const [drag, setDrag] = useState({
-    x: 0,
-    y: 0,
-    dragging: false,
-  } as any);
+  const boxRef = useRef(null);
+  const [ref, pressed] = useDraggable({
+    onDrag: undefined
+  });
   useEffect(() => {
     fetch("/api/getjobs").then(async (res) => {
       let t = await res.json();
@@ -57,44 +139,18 @@ export default function BrowseJobs() {
           </button>{" "}
           {open && (
             <div
-              className={`absolute p-[3%] border-gray-300 border-2 bg-gray-50 w-1/4 rounded-xl flex flex-col cursor-move text-black `}
-              style={{
-                top: drag.y,
-                left: drag.x,
-              }}
-              onMouseDown={(e) => {
-                document.onmouseup = (e) => {
-                  document.onmousemove = null;
-                };
-                document.onmousemove = (e) => {
-                  setDrag({
-                    x: e.pageX - drag.offsetX,
-                    y: e.pageY - drag.offsetY,
-                    offsetX: drag.offsetX,
-                    offsetY: drag.offsetY,
-                    dragging: true,
-                  });
-
-                };
-                var rect = e.target.getBoundingClientRect();
-                var x = e.clientX - rect.left; //x position within the element.
-                var y = e.clientY - rect.top;  //y position within the element.
-
-                setDrag({
-                  x:  e.pageX -x,
-                  y: e.pageY - y,
-                  offsetX: x,
-                  offsetY: y,
-                  dragging: true,
-                });
-              }}
+            id="dragbox"
+              // @ts-ignore
+              ref={ref}
+              className={`absolute p-[3%] border-gray-300 border-2 bg-gray-50 w-1/4 rounded-xl flex flex-col cursor-move text-black resize overflow-auto z-10 `}
+              
             >
               <Image
                 src={"/close.svg"}
                 alt="X"
                 width={20}
                 height={20}
-                className="  absolute right-2 top-2 text-black"
+                className="  absolute right-2 top-2 text-black cursor-pointer"
                 onClick={() => {
                   setOpen(false);
                 }}
