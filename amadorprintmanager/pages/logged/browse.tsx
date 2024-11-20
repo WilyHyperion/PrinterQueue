@@ -179,7 +179,7 @@ export default function BrowseJobs() {
                 className=" p-2 text-black"
                 onChange={(e) => {
                   let FilterType = FilterTypes.find(
-                    (FilterType) => FilterType.name == e.target.value
+                    (FilterType) => (new FilterType([], '')).name == e.target.value
                   );
                   if (FilterType) {
                     console.log(FilterType);
@@ -221,7 +221,7 @@ export default function BrowseJobs() {
               </select>
               {filterMaking &&
                 filterMaking.inputTypes.map((inputType, i) => {
-                  let type = inputType.name;
+                  let type = new inputType([], '').name;
                   return (
                     <div className="flex flex-row justify-between items-center">
                       <strong className="w-[20%]">
