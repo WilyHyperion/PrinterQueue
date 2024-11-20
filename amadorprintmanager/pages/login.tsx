@@ -1,8 +1,9 @@
 "use client";
 import { signIn, useSession } from "next-auth/react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 export default function SignIn() {
+  const [error, setError] = useState('')
   const credentialsAction = async  (formData: FormData) => {
     console.log("formData", formData);
     const formDataObj: { [key: string]: string } = {};
@@ -18,6 +19,9 @@ export default function SignIn() {
       window.location.href = "/logged/home";
     }
   }, [session]);
+  useEffect(() => {
+    setError(new URLSearchParams(window.location.search).get("code") ? "Invaild Login" : '')
+  }, [])
   return (
     <>
         <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-r from-indigo-900 via-purple-800 to-purple-900 w-screen h-screen">
@@ -38,7 +42,7 @@ export default function SignIn() {
                 className="bg-white p-6 rounded-lg shadow-lg w-full max-w-sm"
             >
                 <h2 className="text-2xl text-black font-bold mb-6 text-center">Sign In</h2>
-                
+                <h3 className="text-red-500"> { error}</h3>
                 <label htmlFor="credentials-email" className="block mb-2 text-black">
                     Email
                     <input 
@@ -68,7 +72,7 @@ export default function SignIn() {
                 />
           </form>
            
-          <button 
+          {/* <button 
           onClick={() => signIn("google")}
           className="mt-4 rounded-md flex items-center border border-slate-300 py-2 px-4 text-center text-sm transition-all shadow-sm hover:shadow-lg text-yellow-400 hover:text-white hover:bg-slate-800 hover:border-slate-800 focus:text-white focus:bg-slate-800 focus:border-slate-800 active:border-slate-800 active:text-white active:bg-slate-800 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none" 
           type="button"
@@ -80,7 +84,7 @@ export default function SignIn() {
               className="h-5 w-5 mr-2"
             />
   Continue with Google
-</button>
+</button> */}
 
           <a href="/register" className="mt-4 text-indigo-400 hover:underline">
                 Create Account

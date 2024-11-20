@@ -31,11 +31,11 @@ export default function STLModelUploader() {
     setLoading(true);
     const reader = new FileReader();
     reader.onload = (event) => {
-      const contents = event.target.result;
+      const contents = event.target?.result;
       const loader = new STLLoader();
 
       try {
-        const geometry = loader.parse(contents);
+        const geometry = loader.parse(contents as  any);
 
         // Calculate volume
         const volume = calculateVolume(geometry);
@@ -45,7 +45,7 @@ export default function STLModelUploader() {
         const materialCostPerCc = 0.000025; // Cost per cubic centimeter
 
         // Calculate volume used based on infill density
-        const effectiveVolume = volume * (infillDensity / 100);
+        const effectiveVolume = volume * ((infillDensity as any) / 100);
 
         // Calculate print time and cost
         const printTimeHours = effectiveVolume / printSpeed;
@@ -115,7 +115,7 @@ export default function STLModelUploader() {
       <div className="flex items-center justify-center bg-gradient-to-r from-indigo-900 via-purple-800 to-purple-900 w-screen h-screen">
       
         <div className="grid grid-cols-2 gap-8 p-10 bg-white rounded-lg shadow-xl max-w-5xl">
-          <form className="flex flex-col space-y-6" action="/api/jobsubmit" method="post" encType="multipart/form-data" onSubmit = {
+          <form className="flex flex-col space-y-6"   action="/api/jobsubmit" method="post" encType="multipart/form-data" onSubmit = {
             (e) => {
               const form = e.target as HTMLFormElement;
               const formData = new FormData(form);
@@ -139,14 +139,23 @@ export default function STLModelUploader() {
                 e.preventDefault();
                 return;
               }
-            }
+              if(!formData.get("inFillPercentage")){
+                formData.set("inFillPercentage", "20");
+              }
+              if(!formData.get("notes")){
+                formData.set("notes", "");
+              }
+              return (() => {
+                window.location.replace("/logged/home")
+              })
+            } 
           }>
             <h2 className="text-3xl font-semibold text-gray-700">Upload STL Model</h2>
             <input
               name="file"
               type="file"
               accept=".stl"
-              onChange={handleFileChange}
+              onChange={handleFileChange as any}
               className="file-input file-input-bordered w-full mb-4 border-2 border-gray-300 rounded-lg shadow-sm focus:outline-none focus:border-purple-500"
               required
             />
@@ -213,10 +222,10 @@ export default function STLModelUploader() {
                 <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
               </div>
             </div>
-            <textarea type="text" name="notes" placeholder="Enter Special Requests" className="input text-black text-wrap input-bordered w-full h-auto mb-4 p-2 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-purple-500"/>
+            <textarea  name="notes" placeholder="Enter Special Requests" className="input text-black text-wrap input-bordered w-full h-auto mb-4 p-2 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-purple-500"/>
             <button type="submit" className="btn btn-primary bg-purple-600 hover:bg-purple-700 text-white font-semibold rounded-lg px-4 py-2">Submit</button>
           </form>
-         <STLRender stlFile = {file} color={color}  />
+         <STLRender stlFile = {file as any} color={color}  />
         </div>
       </div>
     </div>

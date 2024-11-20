@@ -19,7 +19,7 @@ export  default async function handler(
     if(!user?.user){
         return
     }
-    if(user.user.role !== "admin" && user.user.role !== "teacher"){
+    if(user.user.role !== "admin" && user.user.role !== "operator"){
         res.status(401).json({ error: "Not authorized" })
         return
     }
