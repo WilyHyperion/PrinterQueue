@@ -210,10 +210,10 @@ export default function BrowseJobs() {
                   ) {
                     return (
                       <option
-                        value={FilterType.name}
+                        value={new FilterType([], '').name}
                         className="p-2  text-black"
                       >
-                        {FilterType.name.replace(/([A-Z])/g, " $1")}
+                        {new FilterType([], '').name.replace(/([A-Z])/g, " $1")}
                       </option>
                     );
                   }

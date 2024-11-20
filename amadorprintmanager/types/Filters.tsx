@@ -168,7 +168,7 @@ class LessThan extends Filter {
     inputLabels: string[] = ["Value"]
 }
 class GreaterThan extends Filter {
-    name = "Less Than"
+    name = "Greater Than"
     inputTypes = [Number]
     shouldRemove(o: string): boolean {
         return parseFloat(o.replace('$', '').replace('Hours', '')) < parseInt(this.inputs[0])
