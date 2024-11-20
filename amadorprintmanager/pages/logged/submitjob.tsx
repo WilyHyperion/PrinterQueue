@@ -145,9 +145,7 @@ export default function STLModelUploader() {
               if(!formData.get("notes")){
                 formData.set("notes", "");
               }
-              return (() => {
-                window.location.replace("/logged/home")
-              })
+             
             } 
           }>
             <h2 className="text-3xl font-semibold text-gray-700">Upload STL Model</h2>

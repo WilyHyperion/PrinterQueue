@@ -67,6 +67,5 @@ export default async function handler(
         const readableStream = fs.createReadStream(files.file[0].filepath.toString());
          readableStream.pipe(bucket.openUploadStream(id + ".stl"))
     });
-    res.redirect(307, "/logged/home")
-    res.end() 
+    res.writeHead(302, { Location: '/' }).end()
 }
