@@ -115,7 +115,7 @@ export default function STLModelUploader() {
       <div className="flex items-center justify-center bg-gradient-to-r from-indigo-900 via-purple-800 to-purple-900 w-screen h-screen">
       
         <div className="grid grid-cols-2 gap-8 p-10 bg-white rounded-lg shadow-xl max-w-5xl">
-          <form className="flex flex-col space-y-6" action="/api/jobsubmit" method="post" encType="multipart/form-data" onSubmit = {
+          <form className="flex flex-col space-y-6"   action="/api/jobsubmit" method="post" encType="multipart/form-data" onSubmit = {
             (e) => {
               const form = e.target as HTMLFormElement;
               const formData = new FormData(form);
@@ -139,7 +139,16 @@ export default function STLModelUploader() {
                 e.preventDefault();
                 return;
               }
-            }
+              if(!formData.get("inFillPercentage")){
+                formData.set("inFillPercentage", "20");
+              }
+              if(!formData.get("notes")){
+                formData.set("notes", "");
+              }
+              return (() => {
+                window.location.replace("/logged/home")
+              })
+            } 
           }>
             <h2 className="text-3xl font-semibold text-gray-700">Upload STL Model</h2>
             <input

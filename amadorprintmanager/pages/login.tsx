@@ -1,8 +1,9 @@
 "use client";
 import { signIn, useSession } from "next-auth/react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 export default function SignIn() {
+  const [error, setError] = useState('')
   const credentialsAction = async  (formData: FormData) => {
     console.log("formData", formData);
     const formDataObj: { [key: string]: string } = {};
@@ -18,6 +19,9 @@ export default function SignIn() {
       window.location.href = "/logged/home";
     }
   }, [session]);
+  useEffect(() => {
+    setError(new URLSearchParams(window.location.search).get("code") ? "Invaild Login" : '')
+  }, [])
   return (
     <>
         <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-r from-indigo-900 via-purple-800 to-purple-900 w-screen h-screen">
@@ -38,7 +42,7 @@ export default function SignIn() {
                 className="bg-white p-6 rounded-lg shadow-lg w-full max-w-sm"
             >
                 <h2 className="text-2xl text-black font-bold mb-6 text-center">Sign In</h2>
-                
+                <h3 className="text-red-500"> { error}</h3>
                 <label htmlFor="credentials-email" className="block mb-2 text-black">
                     Email
                     <input 

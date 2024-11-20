@@ -25,7 +25,7 @@ export default async function handler(
         return
     }
     const form = new Formidable();
-     form.parse(req, async (err: any, fields: any, files) => {
+     await form.parse(req, async (err: any, fields: any, files) => {
       if(!(files.file) ||! (files.file[0])){
         console.log("No file attached")
         return {
@@ -67,5 +67,6 @@ export default async function handler(
         const readableStream = fs.createReadStream(files.file[0].filepath.toString());
          readableStream.pipe(bucket.openUploadStream(id + ".stl"))
     });
-    res.redirect("/logged/home")
+    res.redirect(307, "/logged/home")
+    res.end() 
 }
