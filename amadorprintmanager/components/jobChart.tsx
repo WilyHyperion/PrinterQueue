@@ -72,9 +72,9 @@ export default function JobChart(props: JobChartProps) {
     props.setJobs([...newjobs || []])
   }, [sort]);
   return (
-    <div className="w-full flex flex-col bg-gray-50 m-2 rounded-3xl ">
-      <div className="w-full h-[10%]  text-black flex justify-between px-5">
-        <div className="flex flex-row items-center justify-evenly w-[80%]">
+    <div className="w-full min-h-[80vh]  flex flex-col bg-gray-50 m-2 rounded-3xl ">
+      <div className="w-[80%] h-[10%]  text-black flex justify-between px-5">
+        <div className="flex flex-row items-center justify-evenly w-[100%]">
           {
             Object.keys(literalToPrettyName).map((key) => {
               return <div className="w-[10%]">
@@ -90,7 +90,7 @@ export default function JobChart(props: JobChartProps) {
             })
           }
         </div>
-        <div className="flex flex-row items-center justify-evenly w-[15%]" onClick={
+        <div className="w-[10%] absolute right-[5%]" onClick={
           () => {
             if (sort === "status") {
               setSort("status-")
@@ -105,7 +105,7 @@ export default function JobChart(props: JobChartProps) {
       </div>
       <div className="w-full min-h-[90vh] ">
 
-        {displayJobs != null ? displayJobs.length === 0 && (
+        {displayJobs !== null ? displayJobs.length === 0 && (
           <div className="w-full h-full flex justify-center items-center bg-transparent">
             <h2>No jobs to display</h2>
           </div>
@@ -119,11 +119,11 @@ export default function JobChart(props: JobChartProps) {
           displayJobs &&
           displayJobs.length > 0 && displayJobs.map((job) => {
             return (
-              <div className="w-full h-[10%] p-5  text-black flex justify-between px-5 border-b-indigo-900 border-b-2 m-5" >
-                <div className="flex flex-row items-center justify-evenly w-[80%] ">
-                  <Image width={20} height={20} alt="View" src="/export.svg" onClick={() => {
+              <div className="w-full h-[10%] p-5  text-black flex justify-between px-5 border-b-indigo-900 border-b-2" >
+                <div className="flex flex-row items-center justify-evenly w-[80%]">
+                  <div className = "w-[10%]"><Image width={20} height={20} alt="View" src="/export.svg" onClick={() => {
                     window.location.href = "/logged/job/" + job.id
-                  }} className="underline absolute left-5"></Image>
+                  }} className=""></Image> </div>
                   <h2 className="w-[10%]">{job.name}</h2>
                   <h2 className="w-[10%]">{new Date(job.date).toLocaleDateString()}</h2>
                   <h2 className="w-[10%]">{job.user.studentID}</h2>

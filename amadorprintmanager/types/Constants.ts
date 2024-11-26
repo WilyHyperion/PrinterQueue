@@ -16,6 +16,7 @@ export const printers = [
 ];
 //also controls the collumns that are displayed
 export const literalToPrettyName = {
+  none: "View",
   name: "Job Name",
   date: "Date",
   userId: "SSID",
