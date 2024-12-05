@@ -5,6 +5,7 @@ import { useSession } from "next-auth/react"
 import StatusDropdown from "@/components/statusDropdown"
 import Image from "next/image"
 import Header from "@/components/header"
+import { roles } from "@/types/Constants"
 
 
 
@@ -42,7 +43,7 @@ export default function JobView() {
                             <div>
                                 <h3 className="text-lg font-medium text-gray-700">Submission Details:</h3>
                                 <div className="flex items-center flex-row gap-5   mt-2">
-                                <strong className = "text-gray-500">Status</strong><StatusDropdown defaultValue={job.status} id={job.id} editable = {s?.data?.user?.role === "operator"} changeStatus = {
+                                <strong className = "text-gray-500">Status</strong><StatusDropdown defaultValue={job.status} id={job.id} editable = { roles.elevated.includes(s?.data?.user?.role || "")} changeStatus = {
                                     (status: string) => {
                                         setJob({
                                             ...job,
@@ -64,7 +65,7 @@ export default function JobView() {
                                 <p className="text-gray-500"><strong>Email:</strong> {job.user.email}</p>
                                 <p className="text-gray-500"><strong>School ID:</strong> {job.user.studentID}</p>
                             </div>
-                            {s?.data?.user?.role === "operator" && (
+                            {roles.elevated.includes(s?.data?.user?.role || "")&& (
                             <div className="mt-6 p-4 border-2 text-black border-gray-300 rounded-lg bg-gray-50">
                                 <h3 className="text-lg font-medium text-gray-700">Operator Response:</h3>
                                 <p className="text-gray-500">{teacherMessage}</p>
@@ -93,7 +94,7 @@ export default function JobView() {
                                 </button>
                             </div>
                             )}
-                            {s?.data?.user?.role !== "operator" && (<div className="mt-6 p-4 border-2 text-black border-gray-300 rounded-lg bg-gray-50">
+                            {roles.elevated.includes(s?.data?.user?.role || "") && (<div className="mt-6 p-4 border-2 text-black border-gray-300 rounded-lg bg-gray-50">
                                 <h3 className="text-lg font-medium text-gray-700">Operator Response:</h3>
                                 <p className="text-gray-500 w-full mt-2 p-2 borderrounded-lg whitespace-pre-wrap">{job.teacherResponse}</p>
                             </div>)}

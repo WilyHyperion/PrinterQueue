@@ -6,6 +6,7 @@ import { Job } from "@/types/types";
 import { auth } from "@/auth";
 import db from "@/lib/db";
 import { ObjectId } from "mongodb";
+import { roles } from "@/types/Constants";
 
 
 export  default async function handler(
@@ -21,7 +22,7 @@ export  default async function handler(
         console.log("failed")
         return
     }
-    if(user?.user.role !== "operator") {
+    if(!roles.elevated.includes(user.user.role) ){
         console.log("failede")
         return 
     }

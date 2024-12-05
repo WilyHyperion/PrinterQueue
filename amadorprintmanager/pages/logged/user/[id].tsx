@@ -1,5 +1,6 @@
 import Header from "@/components/header";
 import JobChart from "@/components/jobChart";
+import { roles } from "@/types/Constants";
 import { Job } from "@/types/types";
 import { useEffect, useState } from "react";
 
@@ -35,9 +36,32 @@ export default function UserView() {
               <h1 className="text-3xl font-semibold text-purple-700 py-5">{user.name}</h1>
                <p className = "text-gray-500"><strong>Email:</strong>{user.email}</p>
                <p className = "text-gray-500"><strong>Student ID:</strong>{user.studentID}</p>
-               <p className = "text-gray-500"><strong>Role: </strong>{user.role}</p>
+               <p className = "text-gray-500"><strong>Role: </strong></p> <select defaultValue = {user.role} onChange = {
+                (e) => {
+                  fetch("/api/changeUserRole", {
+                    method: "POST",
+                    body: JSON.stringify({
+                      id: id,
+                      role: e.target.value
+                    }),
+                    headers: {
+                      "Content-Type": "application/json"
+                    }
+                  }).then(async (res) => {
+                    let t = await res.json()
+                    console.log(t)
+                  })
+                }
+               } >
+                {
+                  [...roles.elevated, ...roles.peasant].map((role) => {
+                    return <option value = {role}>{role}</option>
+                  })
+                }
+
+                </select>
                <p className = "text-gray-500"><strong>Number of Jobs:</strong>{jobs.length}</p>
-               <p className = "text-gray-500"><strong>Internal ID:</strong>{user._id}</p>
+               <p className = "text-gray-500"><strong>Internal ID:</strong> {user._id}</p>
                <JobChart jobs = {jobs} setJobs = {setJobs} editable = {false} />
             </>
           ) : (

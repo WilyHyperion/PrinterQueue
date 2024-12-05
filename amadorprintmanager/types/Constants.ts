@@ -36,3 +36,13 @@ export const statusColors = {
 } as {
   [key: string]: string
 }
+
+export const roles = {
+  elevated: [
+    "operator",
+    "admin"
+  ],
+  peasant: [
+    "student"
+  ]
+}

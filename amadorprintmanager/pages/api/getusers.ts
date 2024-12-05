@@ -1,5 +1,6 @@
 import { auth } from "@/auth";
 import db from "@/lib/db";
+import { roles } from "@/types/Constants";
 import type { NextApiRequest, NextApiResponse } from "next";
 
 export default async function handler(req :NextApiRequest, res : NextApiResponse) {
@@ -10,7 +11,7 @@ export default async function handler(req :NextApiRequest, res : NextApiResponse
     if(!user?.user){
         return
     }
-    if(user.user.role !== "admin" && user.user.role !== "operator"){
+    if(!roles.elevated.includes(user.user.role) ){
         res.status(401).json({ error: "Not authorized" })
         return
     }
