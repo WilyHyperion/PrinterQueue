@@ -30,13 +30,13 @@ export default function UserView() {
     <div>
       <Header />
       <div className="flex flex-col w-full h-full  bg-gradient-to-r  from-indigo-900 via-purple-800 to-purple-900  min-h-screen items-center justify-around    ">
-        <div className="bg-white p-6 text-black rounded-lg shadow-lg w-full max-w-[90%] my-[5%] min-h-[50vh] flex flex-col gap-2">
+        <div className="bg-white p-6 text-black rounded-lg shadow-lg w-full max-w-[90%] my-[5%] min-h-[50vh] flex relative flex-col gap-2">
           {user ? (
             <>
               <h1 className="text-3xl font-semibold text-purple-700 py-5">{user.name}</h1>
-               <p className = "text-gray-500"><strong>Email:</strong>{user.email}</p>
-               <p className = "text-gray-500"><strong>Student ID:</strong>{user.studentID}</p>
-               <p className = "text-gray-500"><strong>Role: </strong></p> <select defaultValue = {user.role} onChange = {
+              <p className="text-gray-500"><strong>Email:</strong>{user.email}</p>
+              <p className="text-gray-500"><strong>Student ID:</strong>{user.studentID}</p>
+              <div className="flex flex-row items-center gap-5"><p className="text-gray-500"><strong>Role: </strong></p> <select className="px-5 py-2 rounded-md" defaultValue={user.role} onChange={
                 (e) => {
                   fetch("/api/changeUserRole", {
                     method: "POST",
@@ -52,17 +52,36 @@ export default function UserView() {
                     console.log(t)
                   })
                 }
-               } >
+              } >
                 {
                   [...roles.elevated, ...roles.peasant].map((role) => {
-                    return <option value = {role}>{role}</option>
+                    return <option value={role} className="p-5">{role}</option>
                   })
                 }
 
-                </select>
-               <p className = "text-gray-500"><strong>Number of Jobs:</strong>{jobs.length}</p>
-               <p className = "text-gray-500"><strong>Internal ID:</strong> {user._id}</p>
-               <JobChart jobs = {jobs} setJobs = {setJobs} editable = {false} />
+              </select></div>
+              <p className="text-gray-500"><strong>Number of Jobs:</strong>{jobs.length}</p>
+              <p className="text-gray-500"><strong>Internal ID:</strong> {user._id}</p>
+              <JobChart jobs={jobs} setJobs={setJobs} editable={false} />
+              <button className="absolute right-5 top-5 bg-red-800 text-black px-5 py-2 rounded-md font-bold hover:text-white" onClick={
+                () => {
+                  if (window.confirm("Are you sure you want to delete this user?\n This action cannot be undone.")) {
+                    fetch("/api/deleteUser", {
+                      method: "POST",
+                      body: JSON.stringify({
+                        id: id
+                      }),
+                      headers: {
+                        "Content-Type": "application/json"
+                      }
+                    }).then(async (res) => {
+                      if(res.status == 200){
+                        window.location.href = "/logged/users"
+                      }
+                    })
+                  }
+                }
+              }>Delete User</button>
             </>
           ) : (
             <div>Loading user info...</div>
